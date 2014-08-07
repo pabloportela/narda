@@ -44,7 +44,6 @@ class Review(models.Model):
     text = models.CharField(max_length=255)
 
 
-
 class Menu(models.Model):
     chef = models.ForeignKey(User)
     text = models.CharField(max_length=255)
