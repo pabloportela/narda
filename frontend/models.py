@@ -13,6 +13,9 @@ class Meal(models.Model):
     suggested_price = models.IntegerField()
     is_available = models.IntegerField(default=1)
 
+    def description():
+        return 'This is the meal description'
+
 
 class Inquiry(models.Model):
     meal = models.ForeignKey(Meal)
