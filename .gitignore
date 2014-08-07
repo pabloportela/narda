@@ -54,3 +54,7 @@ docs/_build/
 
 # swap files
 *.swp
+
+# critical settings file
+narda/settings.py
+
