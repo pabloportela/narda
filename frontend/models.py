@@ -43,3 +43,9 @@ class Menu(models.Model):
     text = models.CharField(max_length=255)
 
 
+class Invoice(models.Model):
+    invoiced = models.ForeignKey(User)
+    amount = models.FloatField()
+    due_at = models.DateTimeField('due at')
+    payed_at = models.DateTimeField('payed at')
+
