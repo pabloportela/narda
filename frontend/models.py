@@ -2,46 +2,37 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-
-class Availability(models.Model):
-    chef = models.ForeignKey(User)
+class Meal(models.Model):
     created_at = models.DateTimeField('date created')
-    available_at = models.DateTimeField('date of availability')
+    scheduled_for = models.DateTimeField('scheduled for')
+    confirmed_at = models.DateTimeField('confirmed at')
+    cancelled_at = models.DateTimeField('cancelled at')
+    chef = models.ForeignKey(User, related_name='chef')
+    guest = models.ForeignKey(User, related_name='guest')
     available_seats = models.IntegerField()
     suggested_price = models.IntegerField()
     is_available = models.IntegerField(default=1)
 
-    def __unicode__(self):
-        return self.available_at
-
 
 class Inquiry(models.Model):
-    availability = models.ForeignKey(Availability)
+    meal = models.ForeignKey(Meal)
     guest = models.ForeignKey(User)
-    result = models.CharField(max_length=1) # accepted, rejected
+    result = models.CharField(max_length=1) # Open, Accepted, Rejected, Expired
 
 
 class InquiryText(models.Model):
     inquiry = models.ForeignKey(Inquiry)
-    source = models.CharField(max_length=1) # guest, chef
+    inquirer = models.ForeignKey(User, related_name='inquirer')
+    inquired = models.ForeignKey(User, related_name='inquired')
     text = models.CharField(max_length=255)
     created_at = models.DateTimeField('date created')
-    type = models.CharField(max_length=1) # accept, reject, inquiry
-
-
-class Meal(models.Model):
-    created_at = models.DateTimeField('date created')
-    held_at = models.DateTimeField('date created')
-    chef = models.ForeignKey(User, related_name="chef")
-    guest = models.ForeignKey(User, related_name="guest")
-    cancelled_at = models.DateTimeField('date cancelled')
-
     
+
 class Review(models.Model):
     created_at = models.DateTimeField('date created')
-    guest = models.ForeignKey(User)
-    meal = models.ForeignKey(Meal)
-    text = models.CharField(max_length=255)
+    reviewer = models.ForeignKey(User, related_name='reviewer')
+    reviewed = models.ForeignKey(User, related_name='reviewed')
+    target_type = models.CharField(max_length=1) # who has been reviewed: Guest, Chef
 
 
 class Menu(models.Model):
