@@ -10,7 +10,7 @@ def index(request):
 def search(request, date):
     meal_list = Meal.objects.order_by('-scheduled_for')#[:5]
     context = {'meal_list': meal_list, 'date': date}
-    return render(request, 'search.html', context)
+    return render(request, 'index.html', context)
 
 def chef_detail(request, chef_id):
     return HttpResponse("You're looking at chef %s." % chef_id)

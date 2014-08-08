@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 class Meal(models.Model):
     created_at = models.DateTimeField('date created')
     scheduled_for = models.DateTimeField('scheduled for')
-    confirmed_at = models.DateTimeField(null=True)
-    cancelled_at = models.DateTimeField(null=True)
-    chef = models.ForeignKey(User, related_name='chef',null=True)
+    confirmed_at = models.DateTimeField(blank=True, null=True)
+    cancelled_at = models.DateTimeField(blank=True, null=True)
+    chef = models.ForeignKey(User, related_name='chef', blank=True, null=True)
     guest = models.ForeignKey(User, related_name='guest')
     available_seats = models.IntegerField()
     suggested_price = models.IntegerField()
