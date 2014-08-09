@@ -1,7 +1,7 @@
         <div class="container">
             <br/>
             <div class="col-md-12 content">
-                <form class="form-inline" role="form">
+                <form class="form-inline" role="form" method="GET" action="" id="search_form">
                   <div class="form-group">
                       <label class="sr-only" for="where">Where</label>
                       <input type="text" id="where" class="form-control" placeholder="Where" value="Amsterdam">
@@ -17,5 +17,29 @@
         <script>
         $(function() {
             $("#datepicker").datepicker({ minDate: 0, maxDate: "+3M" });
+            $('#search_form').submit(function(e) {
+                // prevent it from submitting directly
+                e.preventDefault();
+
+                // validate input 
+                if (!validate_search_form()) {
+                    return -1;
+                }
+
+                // format it for mysql
+                scheduled_for = $.datepicker.formatDate("yy-mm-dd",$( "#datepicker").datepicker("getDate"));
+                search_url = get_search_location(scheduled_for);
+                window.location = search_url;
+            });
+
+            function get_search_location(scheduled_for) {
+                search_url = '/search/date/' + scheduled_for;
+                return search_url;
+            }
+
+            function validate_search_form() {
+                // @todo show friendly messages on invalid form
+                return $('#datepicker').val();
+            }
         });
         </script>

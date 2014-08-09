@@ -1,0 +1,21 @@
+{% if meal_list %}
+    <h3>Meals found:</h3>
+    <ul>
+    {% for m in meal_list %}
+        <li>
+        {{m.created_at}} |
+        {{m.scheduled_for}} |
+        {{m.confirmed_at}} |
+        {{m.cancelled_at}} |
+        {{m.chef}} |
+        {{m.guest}} |
+        {{m.available_seats }} |
+        {{m.suggested_price}} |
+        {{m.is_available}}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    No meals found! :(
+{% endif %}
+
