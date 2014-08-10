@@ -5,11 +5,13 @@
 {% block content %}
 <div class="middle">
 
+    <div class="container">
 {% include "search_form.html" %}
 
 {% if meal_list %}
     {% include "search_results.html" %}
 {% endif %}
+    </div>
 
 </div>
 {% endblock %}

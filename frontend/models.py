@@ -7,11 +7,13 @@ class Meal(models.Model):
     scheduled_for = models.DateTimeField('scheduled for')
     confirmed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
-    chef = models.ForeignKey(User, related_name='chef', blank=True, null=True)
-    guest = models.ForeignKey(User, related_name='guest')
+    chef = models.ForeignKey(User, related_name='chef')
+    guest = models.ForeignKey(User, related_name='guest', blank=True, null=True)
     available_seats = models.IntegerField()
     suggested_price = models.IntegerField()
     is_available = models.IntegerField(default=1)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     def description():
         return 'This is the meal description'

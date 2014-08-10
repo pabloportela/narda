@@ -27,10 +27,17 @@ html {
 .banner {
     background-color: #373737;
 }
+.banner .container h3 {
+    color: #eee;
+}
 .banner .container {
-    background-color: #009b9b;
-    min-height: 130px;
+    background-color: #FF8000;
+    min-height: 90px;
     padding: 20px 30px 30px 20px;
+}
+.banner .container h3 .narda {
+    color: #fff;
+    font-weight: 400;
 }
 .banner .container p {
     font-size: 22px;
@@ -66,7 +73,7 @@ html {
     color: #666;
 }
 .navbar-toggle {
-    color: #009b9b;
+    color: #FF8000;
     font-size: 32px;
     margin: 3px;
     padding: 2px 5px;
@@ -85,4 +92,9 @@ html {
 }
 .to-tutorial {
     text-align: center;
+}
+.centered {
+    margin: 0 auto;
+    width: 50%;
+    float: none;
 }
