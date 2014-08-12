@@ -6,14 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Narda{% endblock %}</title>
 
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+{% if debug %}
+    <script src="{% static "jquery/jquery-1.10.2.js" %}"></script>
     <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "jquery/jquery-ui.js" %}"></script>
 
     <link href="{% static "bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
-    <link href="{% static "style.css" %}" rel="stylesheet">
+    <link href="{% static "jquery/jquery-ui.css" %}" rel="stylesheet">
+    <link href="{% static "font-awesome/css/font-awesome.min.css" %}" rel="stylesheet"/>
+{% else %}
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="{% static "font-awesome/css/font-awesome.min.css" %}" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css">
+{% endif %}
+    <link href="{% static "style.css" %}" rel="stylesheet">
+
 </head>
 <body>
     <!-- Site header and navigation -->
@@ -30,6 +40,7 @@
                     <li><a href="#">About us</a></li>
                     <li><a href="#">Contact</a></li>
                 </ul>
+                {% include "authentication.html" %}
             </nav>
         </div>
     </header>
