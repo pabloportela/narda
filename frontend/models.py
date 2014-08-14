@@ -37,12 +37,13 @@ class Review(models.Model):
     created_at = models.DateTimeField('date created')
     reviewer = models.ForeignKey(User, related_name='reviewer')
     reviewed = models.ForeignKey(User, related_name='reviewed')
+    rating = models.IntegerField()
     target_type = models.CharField(max_length=1) # who has been reviewed: Guest, Chef
 
 
 class Menu(models.Model):
     chef = models.ForeignKey(User)
-    text = models.CharField(max_length=255)
+    text = models.TextField()
 
 
 class Invoice(models.Model):

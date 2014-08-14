@@ -8,13 +8,7 @@
      </li>
    {% else %}
      <li>
-       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Facebook</a>
-     </li>
-     <li>
-       <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Google</a>
-     </li>
-     <li>
-       <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Twitter</a>
+       <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}">Login with Facebook</a>
      </li>
    {% endif %}
 </ul>
