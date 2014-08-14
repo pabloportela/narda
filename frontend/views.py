@@ -9,7 +9,7 @@ def index(request):
     return render_to_response('index.html', context_instance=context)
 
 def search(request, date):
-    meal_list = Meal.objects.order_by('-scheduled_for').select_related('chef')#[:5]
+    meal_list = Meal.objects.order_by('-scheduled_for').select_related('kitchen')#[:5]
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
@@ -20,4 +20,3 @@ def search(request, date):
 
 def chef_detail(request, chef_id):
     return HttpResponse("You're looking at chef %s." % chef_id)
-

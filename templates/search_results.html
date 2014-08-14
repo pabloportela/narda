@@ -21,8 +21,8 @@
     var latitudes = [];
     var longitudes = [];
     {% for m in meal_list %}
-    latitudes.push({{m.latitude}});
-    longitudes.push({{m.longitude}});
+    latitudes.push({{m.kitchen.latitude}});
+    longitudes.push({{m.kitchen.longitude}});
     {% endfor %}
 
     function init_map(index) {
@@ -45,7 +45,7 @@
 
 <style>
     .gmnoprint img {
-    max-width: none; 
+    max-width: none;
     }
 
     .panel:hover {

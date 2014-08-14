@@ -1,7 +1,7 @@
 from django.contrib import admin
-from frontend.models import Menu, Inquiry, InquiryText, Meal, Review, Invoice
+from frontend.models import Kitchen, Inquiry, InquiryText, Meal, Review, Invoice
 
-admin.site.register(Menu)
+admin.site.register(Kitchen)
 admin.site.register(Inquiry)
 admin.site.register(InquiryText)
 admin.site.register(Meal)
