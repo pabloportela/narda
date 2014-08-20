@@ -18,5 +18,5 @@ def search(request, date):
     })
     return render_to_response('index.html', context_instance=context)
 
-def chef_detail(request, chef_id):
-    return HttpResponse("You're looking at chef %s." % chef_id)
+def kitchen_detail(request, date, kitchen_slug):
+    return HttpResponse("You're looking at kitchen %s for date %s." % (kitchen_slug , date))

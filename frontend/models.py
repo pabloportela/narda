@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from autoslug import AutoSlugField
 
 
 class Kitchen(models.Model):
@@ -14,6 +15,7 @@ class Kitchen(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     latitude = models.FloatField()
     longitude = models.FloatField()
+    slug = AutoSlugField(populate_from='name')
 
 
 class Meal(models.Model):

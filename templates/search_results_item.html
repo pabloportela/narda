@@ -18,7 +18,10 @@
                                 </div>
                                 <div>
                                     <h4><span class="fa fa-map-marker icon"></span>{{m.kitchen.address}}</h4>
-                                    {{m.kitchen.description}}<span class="fa fa-unlock icon pull-right">Book</span>
+                                    {{m.kitchen.description}}
+                                    <span class="fa fa-unlock icon pull-right">
+                                    <a href="{% url "kitchen_detail" date=date kitchen_slug=m.kitchen.slug %}">View</a>
+                                    </span>
                                 </div>
                             </div>
                         </div>
