@@ -11,14 +11,15 @@ urlpatterns = patterns('',
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
 
     url(r'^$', views.index, name='index'),
-    
-    # eg. chefjohn/2014/08/11
+
+    # eg. johnskitchen/2014-08-11
     #url(r'^chef/(?P<kitchen_slug>\w+)/(?P<year>\d{4})/(?P<month>\d{2})/(?P<day>\d{2})/$',views.chef_detail,name='chef'),
     url(r'^kitchen/(?P<kitchen_slug>\w+)/(?P<date>\d{4}-\d{2}-\d{2})/$',views.kitchen_detail,name='kitchen_detail'),
 
     # eg. search/date/2014-09-17/
     url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/$',views.search,name='search'),
 
+    # backoffice
     url(r'^loudadmin/', include(admin.site.urls)),
 
     # 3rd party authentication

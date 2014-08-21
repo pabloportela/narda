@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}{{kitchen.name}}{% endblock %}
+
+{% block banner %}{% endblock %}
+
+{% block content %}
+<div class="middle">
+
+    <div class="container">
+{% include "kitchen_description.html" %}
+    </div>
+
+</div>
+{% endblock %}
