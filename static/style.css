@@ -98,3 +98,8 @@ html {
     width: 50%;
     float: none;
 }
+.chef-name a {
+    color: #FF8000;
+    font-size: 20px;
+    font-weight: 400;
+}
