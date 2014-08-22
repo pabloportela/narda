@@ -48,8 +48,8 @@ class Profile(models.Model):
 
 class Inquiry(models.Model):
     meal = models.ForeignKey(Meal)
-    sender = models.ForeignKey(User)
-    receiver = models.ForeignKey(User)
+    sender = models.ForeignKey(User, related_name='sent_inquiries')
+    receiver = models.ForeignKey(User, related_name='received_inquiries')
     text = models.CharField(max_length=255)
     created_at = models.DateTimeField('date created')
     read_at = models.DateTimeField('receiver read it')
