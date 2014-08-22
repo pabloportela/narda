@@ -37,6 +37,11 @@ class Meal(models.Model):
 
     def description(self):
         return 'This is the meal description'
+    
+    def book(self, user):
+        self.guest = user
+        self.status = 'p'
+        self.save()
 
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.

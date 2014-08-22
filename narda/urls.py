@@ -12,12 +12,15 @@ urlpatterns = patterns('',
 
     url(r'^$', views.index, name='index'),
 
-    # eg. johnskitchen/2014-08-11/12:35
+    # eg. kitchen/johnskitchen/2014-08-11/12:35
     url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<time>\d{2}:\d{2})/$',views.kitchen_detail,name='kitchen_detail'),
 
     # eg. search/date/2014-09-17/
     url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/$',
         views.search, name='search'),
+
+    # eg. book/123123
+    url(r'^book/$', views.book, name='book'),
 
     # backoffice
     url(r'^loudadmin/', include(admin.site.urls)),

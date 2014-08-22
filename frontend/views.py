@@ -1,4 +1,4 @@
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 
@@ -26,3 +26,10 @@ def kitchen_detail(request, date, time, kitchen_slug):
         'meal': meal,
     })
     return render_to_response('kitchen_detail.html', context_instance=context)
+
+def book(request):
+    # TODO: asser user logged in, otherwise have that done
+    meal_id = request.POST.get('meal_id')
+    meal = get_object_or_404(Meal, id=meal_id)
+    meal.book(request.user)
+    return HttpResponse('booking successful! :)')

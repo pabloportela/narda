@@ -1,0 +1,5 @@
+    <form method="post" action="{% url "book"%}">
+    {% csrf_token %}
+    <input type="hidden" name="meal_id" value="{{meal.id}}">
+    <button type="submit" class="btn btn-primary btn-lg">Book this meal</button>
+    </form>
