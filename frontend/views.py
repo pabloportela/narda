@@ -18,14 +18,11 @@ def search(request, date):
     })
     return render_to_response('index.html', context_instance=context)
 
-def kitchen_detail(request, date, kitchen_slug):
-    meal_list = Meal.objects.order_by('-scheduled_for').select_related('kitchen')#[:5]
-    kitchen = Kitchen.objects.get(slug=kitchen_slug)
-#    kitchen_avialability = kitchen_get_availability(date)
+def kitchen_detail(request, date, time, kitchen_slug):
+    meal = Meal.objects.select_related('kitchen').get(kitchen__slug=kitchen_slug, scheduled_for=date + " " + time)
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
-        'kitchen': kitchen,
-        'date': date
+        'meal': meal,
     })
     return render_to_response('kitchen_detail.html', context_instance=context)

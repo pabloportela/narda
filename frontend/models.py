@@ -32,7 +32,10 @@ class Meal(models.Model):
     # Open, Pending, Accepted, Rejected, Expired
     status = models.CharField(max_length=1)
 
-    def description():
+    def time(self):
+        return "%02d:%02d" % (self.scheduled_for.hour, self.scheduled_for.minute)
+
+    def description(self):
         return 'This is the meal description'
 
 
