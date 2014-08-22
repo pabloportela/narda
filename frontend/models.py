@@ -29,6 +29,8 @@ class Meal(models.Model):
     created_at = models.DateTimeField('date created')
     confirmed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
+    # Open, Pending, Accepted, Rejected, Expired
+    status = models.CharField(max_length=1)
 
     def description():
         return 'This is the meal description'
@@ -46,17 +48,12 @@ class Profile(models.Model):
 
 class Inquiry(models.Model):
     meal = models.ForeignKey(Meal)
-    guest = models.ForeignKey(User)
-    # Open, Accepted, Rejected, Expired
-    result = models.CharField(max_length=1)
-
-
-class InquiryText(models.Model):
-    inquiry = models.ForeignKey(Inquiry)
-    inquirer = models.ForeignKey(User, related_name='inquirer')
-    inquired = models.ForeignKey(User, related_name='inquired')
+    sender = models.ForeignKey(User)
+    receiver = models.ForeignKey(User)
     text = models.CharField(max_length=255)
     created_at = models.DateTimeField('date created')
+    read_at = models.DateTimeField('receiver read it')
+    committed = models.BooleanField()
 
 
 class Review(models.Model):
