@@ -103,7 +103,11 @@ html {
     font-size: 20px;
     font-weight: 400;
 }
-
+.narda-orange {
+    color: #FF8000;
+    font-size: 20px;
+    font-weight: 300;
+}
 
 .summary-divider {
     margin: 80px 0;

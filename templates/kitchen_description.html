@@ -1,15 +1,16 @@
     <div class="summary">
-        <img class="summary-image img-suqare img-responsive pull-right" alt="Bootstrap template" src="http://placehold.it/500x500">
-        <h2 class="summary-heading">
-            {{kitchen.name}} <span class="text-muted">Availability on {{date}}</span>
-        </h2>
-        <p class="lead">
-            It is a long established fact that a reader will be distracted by the readable content 
-            of a page when looking at its layout. The point of using Lorem Ipsum is that it has a 
-            more-or-less normal distribution of letters, as opposed to using 'Content here, content here', 
-            making it look like readable English. Many desktop publishing packages and web page editors now 
-            use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web 
-            sites still in their infancy. Various versions have evolved over the years, sometimes by accident, 
-            sometimes on purpose (injected humour and the like).
-        </p>
+        <img class="summary-image img-suqare img-responsive pull-right" alt="{{meal.kitchen.name}}" src="/static/pictures/kitchens/{{meal.kitchen.slug}}/profile.png" />
+        <h1 class="narda-orange">
+            {{meal.kitchen.name}}
+        </h1>
+        <h3>
+            {{meal.kitchen.summary}}
+        </h3>
+        <h4 class="narda-orange">Menu</h4>
+        <span class="lead">
+            {{meal.kitchen.menu | escape | linebreaks}}
+        </span>
+        <h4 class="narda-orange">House Rules</h4>
+        <span class="lead text-muted">{{meal.kitchen.house_rules | escape | linebreaks}}
+        </span>
     </div>
