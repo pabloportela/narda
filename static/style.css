@@ -105,8 +105,6 @@ html {
 }
 .narda-orange {
     color: #FF8000;
-    font-size: 20px;
-    font-weight: 300;
 }
 
 .summary-divider {
@@ -136,4 +134,10 @@ html {
 }
 .meal_date {
     color: #197bb5;
+}
+
+.book-button {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }

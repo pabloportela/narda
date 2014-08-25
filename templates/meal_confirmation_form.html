@@ -1,5 +1,26 @@
-    <form method="post" action="{% url "book"%}">
+    
+    <h3>Meal Details</h3>
+    <span class="lead">
+        This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.address}}
+    </span>
+    <br/>
+    <br/>
+
+    <form method="post" action="{% url "book"%}" id="meal_form">
     {% csrf_token %}
     <input type="hidden" name="meal_id" value="{{meal.id}}">
-    <button type="submit" class="btn btn-primary btn-lg">Book this meal</button>
+    <button type="submit" class="btn btn-primary btn-lg book-button">Book this meal</button>
     </form>
+
+    <script>
+    $(document).ready(function() {
+        // handle form submission
+        $('#meal_form').submit(function (event) {
+            if (!window.confirm('Please confirm the booking of this meal')) {
+                event.preventDefault();
+                return -1;
+            }
+        });
+    })
+    </script>
+
