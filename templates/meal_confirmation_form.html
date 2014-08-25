@@ -6,21 +6,40 @@
     <br/>
     <br/>
 
-    <form method="post" action="{% url "book"%}" id="meal_form">
-    {% csrf_token %}
-    <input type="hidden" name="meal_id" value="{{meal.id}}">
-    <button type="submit" class="btn btn-primary btn-lg book-button">Book this meal</button>
-    </form>
+    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#meal_confirmation_modal">
+        Book this meal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="meal_confirmation_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <form method="post" action="{% url "book"%}" id="meal_form">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h3 class="modal-title narda-orange" id="myModalLabel">Meal Details</h3>
+          </div>
+          <div class="modal-body">
+            <span class="lead">
+                This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.name}} ({{meal.kitchen.address}})
+            </span>
+            {% csrf_token %}
+            <input type="hidden" name="meal_id" value="{{meal.id}}">
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
 
     <script>
     $(document).ready(function() {
-        // handle form submission
-        $('#meal_form').submit(function (event) {
-            if (!window.confirm('Please confirm the booking of this meal')) {
-                event.preventDefault();
-                return -1;
-            }
-        });
+        if (/confirm/.test(window.location)) {
+            $('#meal_confirmation_modal').modal();
+        }
     })
     </script>
 

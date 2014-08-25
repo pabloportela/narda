@@ -13,7 +13,10 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
 
     # eg. kitchen/johnskitchen/2014-08-11/12:35
-    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<time>\d{2}:\d{2})/$',views.kitchen_detail,name='kitchen_detail'),
+    url(
+        r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<time>\d{2}:\d{2})/$',
+        views.kitchen_detail,
+        name='kitchen_detail'),
 
     # eg. search/date/2014-09-17/
     url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/$',

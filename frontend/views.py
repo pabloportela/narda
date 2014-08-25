@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.template import RequestContext, loader
 
 from frontend.models import Meal, Kitchen
@@ -20,6 +20,9 @@ def search(request, date):
 
 def kitchen_detail(request, date, time, kitchen_slug):
     meal = Meal.objects.select_related('kitchen').get(kitchen__slug=kitchen_slug, scheduled_for=date + " " + time)
+    if not meal:
+        raise Http404
+
     # TODO: assert object found or 404
     context = RequestContext(request, {
         'request': request,
