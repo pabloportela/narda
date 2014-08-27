@@ -29,6 +29,12 @@
             </span>
             {% csrf_token %}
             <input type="hidden" name="meal_id" value="{{meal.id}}">
+            <label for="requested_seats">Requested Seats</label>
+            <select name="requested_seats" id="requested_seats">
+              {% for i in available_seats %}
+              <option value="{{i}}">{{i}}</option>
+              {% endfor %}
+            </select>
           </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Confirm Booking</button>
