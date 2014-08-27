@@ -16,6 +16,7 @@ class Kitchen(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     slug = AutoSlugField(populate_from='name')
+    available_seats = models.IntegerField()
 
 
 class Meal(models.Model):
@@ -23,21 +24,21 @@ class Meal(models.Model):
     kitchen = models.ForeignKey(Kitchen)
     guest = models.ForeignKey(
         User, related_name='guest', blank=True, null=True)
-    available_seats = models.IntegerField()
     is_available = models.IntegerField(default=1)
 
-    created_at = models.DateTimeField('date created')
+    created_at = models.DateTimeField('date created', auto_now=True)
     confirmed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
     # Open, Pending, Accepted, Rejected, Expired
-    status = models.CharField(max_length=1)
+    status = models.CharField(max_length=1, default='o')
 
     def time(self):
-        return "%02d:%02d" % (self.scheduled_for.hour, self.scheduled_for.minute)
+        return "%02d:%02d" % (
+            self.scheduled_for.hour, self.scheduled_for.minute)
 
     def description(self):
         return 'This is the meal description'
-    
+
     def book(self, user):
         self.guest = user
         self.status = 'p'

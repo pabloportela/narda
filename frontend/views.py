@@ -3,6 +3,8 @@ from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 
+from datetime import datetime, timedelta
+
 from frontend.models import Meal
 
 
@@ -13,8 +15,14 @@ def index(request):
 
 
 def search(request, date):
-    meal_list = Meal.objects.filter(scheduled_for=date).order_by(
-        '-scheduled_for').select_related('kitchen')
+    arg_datetime = datetime.strptime(date, '%Y-%m-%d')
+    one_day = timedelta(1)
+    meal_list = Meal.objects.filter(
+        scheduled_for__lt=(arg_datetime + one_day),
+        scheduled_for__gt=arg_datetime
+    ).order_by(
+        'scheduled_for'
+    ).select_related('kitchen')
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
