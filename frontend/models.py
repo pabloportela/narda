@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from autoslug import AutoSlugField
 
+from notification.models import Notification
+
 
 class Kitchen(models.Model):
     chef = models.ForeignKey(User)
@@ -40,9 +42,11 @@ class Meal(models.Model):
         return 'This is the meal description'
 
     def book(self, user):
+        import ipdb; ipdb.set_trace()
         self.guest = user
         self.status = 'p'
         self.save()
+        Notification.notify('book', self)
 
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.
