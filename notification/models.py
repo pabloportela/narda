@@ -15,32 +15,25 @@ class Notification(models.Model):
     status = models.CharField(max_length=1, default='p')
 
     @staticmethod
-    def notify(template_name, meal):
+    def notify(template_name, context):
+        """
+        context is a dictionary including some template variables.
+        It is mandatory to have to_address here.
+        """
+        to_address = context['to_address']
         template_name = 'emails/' + template_name
         subject_template = get_template(
             template_name + '_subject.html')
         body_template = get_template(template_name + '_body.html')
-        subject = subject_template.render(
-            Context(
-                {
-                    'name': meal.guest.first_name,
-                }
-            )
-        ).strip()  # Otherwise we get header errors.
-        body = body_template.render(
-            Context(
-                {
-                    'name': meal.guest.get_full_name(),
-                    'date': meal.scheduled_for,
-                    'kitchen_name': meal.kitchen.name
-                }
-            )
-        )
-        sent = send_mail(subject, body, FROM_ADDRESS, [meal.guest.email])
+        context = Context(context)
+        # Strip, otherwise we get header errors.
+        subject = subject_template.render(context).strip()
+        body = body_template.render(context)
+        sent = send_mail(subject, body, FROM_ADDRESS, [to_address])
         status = 's' if sent else 'e'
         Notification.objects.create(
             from_address=FROM_ADDRESS,
-            to_address=meal.guest.email,
+            to_address=to_address,
             subject=subject,
             body=body,
             status=status,

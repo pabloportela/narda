@@ -1,7 +1,7 @@
 {% autoescape off %}
-Howdy {{ name }}!
+Howdy {{ meal.guest.get_full_name }}!
 
-We have saved your booking on {{ date }} at the {{ kitchen_name }}.
+We have saved your booking on {{ meal.scheduled_for }} at the {{ meal.kitchen.name }}.
 
 Thanks, and we hope you enjoy it!
 

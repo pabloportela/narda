@@ -33,6 +33,7 @@ class Meal(models.Model):
     cancelled_at = models.DateTimeField(blank=True, null=True)
     # Open, Pending, Accepted, Rejected, Expired
     status = models.CharField(max_length=1, default='o')
+    number_of_guests = models.IntegerField()
 
     def time(self):
         return "%02d:%02d" % (
@@ -45,7 +46,16 @@ class Meal(models.Model):
         self.guest = user
         self.status = 'p'
         self.save()
-        #Notification.notify('book', self)
+        # Guest confirmation
+        Notification.notify('book_guest', {
+            'to_address': self.guest.email,
+            'meal': self,
+        })
+        # Chef confirmation
+        Notification.notify('book_chef', {
+            'to_address': self.kitchen.chef.email,
+            'meal': self,
+        })
 
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.

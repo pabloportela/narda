@@ -1,0 +1,17 @@
+{% autoescape off %}
+Howdy {{ meal.kitchen.chef.get_full_name }}!
+
+A new guest was registered for your kitchen:
+
+Date & Time: {{ meal.scheduled_for }}
+Guest Name: {{ meal.guest.get_full_name }}
+Number of Guests: {{ meal.number_of_guests }}
+
+
+Best,
+
+HaveAChef.com Team,
+
+
+PS. You are always welcome to let us know how it went!
+{% endautoescape %}
