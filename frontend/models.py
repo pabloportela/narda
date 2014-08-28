@@ -45,7 +45,7 @@ class Meal(models.Model):
         self.guest = user
         self.status = 'p'
         self.save()
-        Notification.notify('book', self)
+        #Notification.notify('book', self)
 
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.

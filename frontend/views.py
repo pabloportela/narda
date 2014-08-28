@@ -52,4 +52,10 @@ def book(request):
     meal_id = request.POST.get('meal_id')
     meal = get_object_or_404(Meal, id=meal_id)
     meal.book(request.user)
-    return HttpResponse('booking successful! :)')
+
+    context = RequestContext(request, {
+        'request': request,
+        'user': request.user,
+        'meal': meal,
+    })
+    return render_to_response('booking_details.html',context_instance=context)

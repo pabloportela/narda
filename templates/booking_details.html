@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{meal.kitchen.name}}{% endblock %}
+
+{% block content %}
+<div class="middle">
+
+    <div class="container">
+    <h3 class="narda-orange">Voila! You have just booked a meal on "{{meal.kitchen.name}}"!</h3>
+    <p>
+    <br/>
+    {{meal.kitchen.user.first_name}} {{meal.kitchen.chef.first_name}} will be waiting for you on
+    {{meal.kitchen.address}} at {{meal.scheduled_for}}.
+    <br/>
+    Please be on time, and if necessary feel free to contact {{meal.kitchen.chef.name}} by email at {{meal.kitchen.chef.email}}.
+    <br/>
+    An email will be sent to {{user.email}} with this and further information about your booking.
+    </p>
+    </div>
+
+</div>
+{% endblock %}
