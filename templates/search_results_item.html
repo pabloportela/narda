@@ -12,7 +12,7 @@
                                 <div class="clearfix">
                                     <div class="pull-left chef-name">
                                         <a href="{% url "kitchen_detail" date=m.scheduled_for.date time=m.time kitchen_slug=m.kitchen.slug %}">
-                                        {{m.kitchen.chef.first_name}}
+                                        {{m.kitchen.name}}
                                         </a>
                                     </div>
                                     <div class="pull-right">

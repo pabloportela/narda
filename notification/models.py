@@ -10,7 +10,7 @@ class Notification(models.Model):
     def notify(template_name, meal):
         template_name = 'emails/' + template_name
         subject_template = get_template(
-            template_name + '_subject.html').strip()
+            template_name + '_subject.html')
         body_template = get_template(template_name + '_body.html')
         subject = subject_template.render(
             Context(
@@ -18,7 +18,7 @@ class Notification(models.Model):
                     'name': meal.guest.first_name,
                 }
             )
-        )
+        ).strip()
         body = body_template.render(
             Context(
                 {
