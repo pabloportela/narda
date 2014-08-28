@@ -1,8 +1,9 @@
-    
-    <h3>Meal Details</h3>
+
+    <h3 class="narda-orange">Meal Details</h3>
     <span class="lead">
-        This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.address}}
+    This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.address}} and there is place for up to {{meal.kitchen.available_seats}} guests.
     </span>
+
     <br/>
     <br/>
 
@@ -17,28 +18,26 @@
     <!-- Modal -->
     <div class="modal fade" id="meal_confirmation_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
-        <form method="post" action="{% url "book"%}" id="meal_form">
+        <form method="post" action="{% url "book"%}" id="meal_form" class="form">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h3 class="modal-title narda-orange" id="myModalLabel">Meal Details</h3>
           </div>
+
           <div class="modal-body">
             <span class="lead">
                 This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.name}} ({{meal.kitchen.address}})
             </span>
             {% csrf_token %}
             <input type="hidden" name="meal_id" value="{{meal.id}}">
-            <label for="requested_seats">Requested Seats</label>
-            <select name="requested_seats" id="requested_seats">
-              {% for i in available_seats %}
-              <option value="{{i}}">{{i}}</option>
-              {% endfor %}
-            </select>
+
           </div>
+
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Confirm Booking</button>
           </div>
+
         </div>
         </form>
       </div>
@@ -52,4 +51,3 @@
         }
     })
     </script>
-
