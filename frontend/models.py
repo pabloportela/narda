@@ -42,7 +42,6 @@ class Meal(models.Model):
         return 'This is the meal description'
 
     def book(self, user):
-        import ipdb; ipdb.set_trace()
         self.guest = user
         self.status = 'p'
         self.save()
