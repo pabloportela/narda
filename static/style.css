@@ -107,6 +107,11 @@ html {
     color: #FF8000;
 }
 
+.narda-footer, .narda-footer:hover {
+    color: #999;
+    text-decoration: none;
+}
+
 .summary-divider {
     margin: 80px 0;
 }

@@ -9,8 +9,7 @@ from frontend.models import Meal
 
 
 def index(request):
-    context = RequestContext(request,
-                             {'request': request, 'user': request.user})
+    context = RequestContext(request, {'request': request, 'user': request.user})
     return render_to_response('index.html', context_instance=context)
 
 
@@ -35,7 +34,8 @@ def search(request, date):
 def kitchen_detail(request, date, time, kitchen_slug):
     meal = Meal.objects.select_related(
         'kitchen').get(kitchen__slug=kitchen_slug,
-                       scheduled_for=date + " " + time)
+        scheduled_for=date + " " + time
+    )
     if not meal:
         raise Http404
     context = RequestContext(request, {
@@ -59,3 +59,7 @@ def book(request):
         'meal': meal,
     })
     return render_to_response('booking_details.html',context_instance=context)
+
+def site_info(request, content):
+    context = RequestContext(request, {'request': request, 'content':content})
+    return render_to_response('site_info/'+content+'.html', context_instance=context)

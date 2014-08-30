@@ -35,10 +35,12 @@
             </button>
             <nav class="navbar-collapse collapse" role="navigation">
                 <ul class="navbar-nav nav">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">How it works</a></li>
-                    <li><a href="#">About us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url "site_info" content="why" %}">Why Narda?</a></li>
+                    <li><a href="{% url "site_info" content="how_it_works" %}">How it works</a></li>
+                    <li><a href="{% url "site_info" content="pricing" %}">Pricing</a></li>
+                    <li><a href="{% url "site_info" content="about_us" %}">About us</a></li>
+                    <li><a href="mailto:info@haveachef.com">Contact</a></li>
                 </ul>
                 {% include "authentication.html" %}
             </nav>
@@ -60,17 +62,17 @@
     <!-- Site footer -->
     <div class="bottom">
         <div class="container">
-            <div class="col-md-4">
-                <h3><span class="glyphicon glyphicon-heart"></span> Footer section 1</h3>
-                <p>Content for the first footer section.</p>
+            <div class="col-md-3">
+                <h3><span class="glyphicon glyphicon-cutlery"></span> <a href="{% url "site_info" content="why" %}" class="narda-footer">Why Narda?</a></h3>
             </div>
-            <div class="col-md-4">
-                <h3><span class="glyphicon glyphicon-star"></span> Footer section 2</h3>
-                <p>Content for the second footer section.</p>
+            <div class="col-md-3">
+                <h3><span class="glyphicon glyphicon-retweet"></span> <a href="{% url "site_info" content="how_it_works" %}" class="narda-footer">How it works</a></h3>
             </div>
-            <div class="col-md-4">
-                <h3><span class="glyphicon glyphicon-music"></span> Footer section 3</h3>
-                <p>Content for the third footer section.</p>
+            <div class="col-md-3">
+                <h3><span class="glyphicon glyphicon-euro"></span> <a href="{% url "site_info" content="pricing" %}" class="narda-footer">Pricing</a></h3>
+            </div>
+            <div class="col-md-3">
+                <h3><span class="glyphicon glyphicon-user"></span> <a href="{% url "site_info" content="about_us" %}" class="narda-footer">About us</a></h3>
             </div>
         </div>
     </div>

@@ -6,10 +6,12 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    # 3rd party authentication
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
 
+    # homepage
     url(r'^$', views.index, name='index'),
 
     # eg. kitchen/johnskitchen/2014-08-11/12:35
@@ -28,6 +30,6 @@ urlpatterns = patterns('',
     # backoffice
     url(r'^loudadmin/', include(admin.site.urls)),
 
-    # 3rd party authentication
-    url('', include('social.apps.django_app.urls', namespace='social')),
+    # site info
+    url(r'^(?P<content>(why|how_it_works|pricing|about_us))/$', views.site_info, name='site_info'),
 )
