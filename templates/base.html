@@ -29,13 +29,12 @@
     <!-- Site header and navigation -->
     <header class="top" role="header">
         <div class="container">
-            <a href="#" class="navbar-brand pull-left">Narda</a>
+            <a href="/" class="navbar-brand pull-left">Narda</a>
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="glyphicon glyphicon-align-justify"></span>
             </button>
             <nav class="navbar-collapse collapse" role="navigation">
                 <ul class="navbar-nav nav">
-                    <li><a href="/">Home</a></li>
                     <li><a href="{% url "site_info" content="why" %}">Why Narda?</a></li>
                     <li><a href="{% url "site_info" content="how_it_works" %}">How it works</a></li>
                     <li><a href="{% url "site_info" content="pricing" %}">Pricing</a></li>
@@ -51,7 +50,7 @@
     {% block banner %}
     <div class="banner">
         <div class="container">
-            <h3>Eat home made food. For a convenient price. Meet people at their place. <span class="narda">Meet Narda.</span></h3>
+            <h3>Eat home made food. For a convenient price. Meet local at their place. <span class="narda">Meet Narda.</span></h3>
         </div>
     </div>
     {% endblock %}
@@ -63,16 +62,16 @@
     <div class="bottom">
         <div class="container">
             <div class="col-md-3">
-                <h3><span class="glyphicon glyphicon-cutlery"></span> <a href="{% url "site_info" content="why" %}" class="narda-footer">Why Narda?</a></h3>
+                <h4><span class="glyphicon glyphicon-cutlery narda-orange"></span> <a href="{% url "site_info" content="why" %}" class="narda-footer">Why Narda?</a></h4>
             </div>
             <div class="col-md-3">
-                <h3><span class="glyphicon glyphicon-retweet"></span> <a href="{% url "site_info" content="how_it_works" %}" class="narda-footer">How it works</a></h3>
+                <h4><span class="glyphicon glyphicon-retweet narda-orange"></span> <a href="{% url "site_info" content="how_it_works" %}" class="narda-footer">How it works</a></h4>
             </div>
             <div class="col-md-3">
-                <h3><span class="glyphicon glyphicon-euro"></span> <a href="{% url "site_info" content="pricing" %}" class="narda-footer">Pricing</a></h3>
+                <h4><span class="glyphicon glyphicon-euro narda-orange"></span> <a href="{% url "site_info" content="pricing" %}" class="narda-footer">Pricing</a></h4>
             </div>
             <div class="col-md-3">
-                <h3><span class="glyphicon glyphicon-user"></span> <a href="{% url "site_info" content="about_us" %}" class="narda-footer">About us</a></h3>
+                <h4><span class="glyphicon glyphicon-user narda-orange"></span> <a href="{% url "site_info" content="about_us" %}" class="narda-footer">About us</a></h4>
             </div>
         </div>
     </div>
