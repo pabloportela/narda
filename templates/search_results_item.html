@@ -1,36 +1,26 @@
 {% load staticfiles %}
             <div class="row">
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
-                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-md-8 col-md-offset-2">
                     <div class="panel panel-default">
-                        <div class="row padall">
-                            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                        <div class="panel-body row">
+                            <div class="col-md-3">
                                 <a href="{% url "kitchen_detail" date=m.scheduled_for.date time=m.time kitchen_slug=m.kitchen.slug %}">
-                                <img src="/static/pictures/kitchens/{{m.kitchen.id}}/profile.png" />
+                                    <img src="/static/pictures/kitchens/{{m.kitchen.id}}/profile.png" height="100"/>
                                 </a>
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-                                <div class="clearfix">
-                                    <div class="pull-left chef-name">
-                                        <h3>
-                                        <a href="{% url "kitchen_detail" date=m.scheduled_for.date time=m.time kitchen_slug=m.kitchen.slug %}">
-                                        {{m.kitchen.name}}
-                                        </a>
-                                        </h3>
-                                        {{m.kitchen.summary}}
-                                    </div>
-                                    <div class="pull-right">
-                                        {{m.scheduled_for}}
-<br>
-                                        <span class="fa fa-map-marker icon"></span>{{m.kitchen.address}}
-<br>
-                                        Dishes from
-                                        <span class="fa fa-euro icon">{{m.kitchen.dishes_from}}</span>
-                                    </div>
-                                </div>
+                            <div class="col-md-5">
+                                <a href="{% url "kitchen_detail" date=m.scheduled_for.date time=m.time kitchen_slug=m.kitchen.slug %}">
+                                    <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
+                                </a>
+                                <br/>
+                                {{m.kitchen.summary}}
+                            </div>
+                            <div class="col-md-4">
+                                <h5><span class="glyphicon glyphicon-time narda-blue"></span> {{m.scheduled_for}}</h5>
+                                <h5><span class="glyphicon glyphicon-map-marker narda-blue"></span> {{m.kitchen.address}}</h5>
+                                <h5>Dishes from <span class="glyphicon glyphicon-euro narda-blue"></span> {{m.kitchen.dishes_from}}</h5>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3"></div>
             </div>

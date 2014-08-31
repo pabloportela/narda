@@ -1,6 +1,6 @@
 {% if meal_list %}
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <br/>
         <br/>
         {% for m in meal_list %}
@@ -10,35 +10,10 @@
     </div>
 
 <style>
-    .gmnoprint img {
-    max-width: none;
-    }
+.panel:hover {
+    background-color: #eee;
+}
 
-    .panel:hover {
-        background-color: #eee;
-    }
-
-    img {
-        max-width: 110%;
-        height: auto;
-    }
-
-    .clearfix {
-        clear: both;
-    }
-
-    .rowcolor {
-        background-color: #CCCCCC;
-    }
-
-    .padall {
-        padding: 10px;
-    }
-
-    .icon {
-        font-size: 23px;
-        color: #197BB5;
-    }
 </style>
 
 {% else %}

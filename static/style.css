@@ -9,6 +9,11 @@ p {
 html {
     background-color: #474747;
 }
+
+a:hover {
+    text-decoration: none;
+}
+
 .top {
     background-color: #474747;
 }
@@ -98,18 +103,20 @@ html {
     width: 50%;
     float: none;
 }
-.chef-name a {
+.kitchen-name {
     color: #FF8000;
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 300;
 }
 .narda-orange {
     color: #FF8000;
 }
+.narda-blue {
+    color: #3276b1;
+}
 
 .narda-footer, .narda-footer:hover {
     color: #999;
-    text-decoration: none;
 }
 
 .summary-divider {
