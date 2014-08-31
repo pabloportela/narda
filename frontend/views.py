@@ -18,7 +18,8 @@ def search(request, date):
     one_day = timedelta(1)
     meal_list = Meal.objects.filter(
         scheduled_for__lt=(arg_datetime + one_day),
-        scheduled_for__gt=arg_datetime
+        scheduled_for__gt=arg_datetime,
+        status__exact='o'
     ).order_by(
         'scheduled_for'
     ).select_related('kitchen')
