@@ -45,7 +45,7 @@ def kitchen_detail(request, date, time, kitchen_slug):
         'meal': meal,
         'available_seats': range(1,meal.kitchen.available_seats+1),
     })
-    return render_to_response('kitchen_detail.html', context_instance=context)
+    return render_to_response('kitchen/kitchen_detail.html', context_instance=context)
 
 
 @login_required
@@ -59,7 +59,7 @@ def book(request):
         'user': request.user,
         'meal': meal,
     })
-    return render_to_response('booking_details.html',context_instance=context)
+    return render_to_response('meal/booking_details.html',context_instance=context)
 
 def site_info(request, content):
     context = RequestContext(request, {'request': request, 'content':content})
