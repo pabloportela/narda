@@ -2,10 +2,10 @@
         <h3 class="narda-orange">
             {{meal.kitchen.name}}
         </h3>
-        <span class="lead">{{meal.kitchen.summary}}</span>
+        <p>{{meal.kitchen.summary}}</p>
 
         <h4 class="narda-orange">Menu</h4>
-        <span class="lead">{{meal.kitchen.menu | escape | linebreaks}}</span>
+        <p>{{meal.kitchen.menu | escape | linebreaks}}</p>
 
         <h4 class="narda-orange">House Rules</h4>
-        <span class="lead text-muted">{{meal.kitchen.house_rules | escape | linebreaks}}</span>
+        <p>{{meal.kitchen.house_rules | escape | linebreaks}}</p>
