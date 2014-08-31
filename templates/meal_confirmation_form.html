@@ -1,11 +1,8 @@
 
-    <h3 class="narda-orange">Meal Details</h3>
-    <span class="lead">
+    <h4 class="narda-orange">Meal Details</h4>
+    <p class="lead">
     This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.address}} and there is place for up to {{meal.kitchen.available_seats}} guests.
-    </span>
-
-    <br/>
-    <br/>
+    </p>
 
     {% if user and user.is_anonymous %}
     <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path}}?confirm" class="btn btn-primary btn-lg" role="button" >Sign in through Facebook and Book</a>

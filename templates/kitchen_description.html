@@ -1,12 +1,11 @@
-        <img class="summary-image img-suqare img-responsive pull-right" alt="{{meal.kitchen.name}}" src="/static/pictures/kitchens/{{meal.kitchen.slug}}/01.png" />
-        <h1 class="narda-orange">
+        <img class="summary-image img-suqare img-responsive pull-right" alt="{{meal.kitchen.name}}" src="/static/pictures/kitchens/{{meal.kitchen.id}}/01.png" />
+        <h3 class="narda-orange">
             {{meal.kitchen.name}}
-        </h1>
-        <h3>{{meal.kitchen.summary}}</h3>
+        </h3>
+        <span class="lead">{{meal.kitchen.summary}}</span>
 
-        <h3 class="narda-orange">Menu</h3>
+        <h4 class="narda-orange">Menu</h4>
         <span class="lead">{{meal.kitchen.menu | escape | linebreaks}}</span>
 
-        <h3 class="narda-orange">House Rules</h3>
-        <span class="lead text-muted">{{meal.kitchen.house_rules | escape | linebreaks}}
-        </span>
+        <h4 class="narda-orange">House Rules</h4>
+        <span class="lead text-muted">{{meal.kitchen.house_rules | escape | linebreaks}}</span>
