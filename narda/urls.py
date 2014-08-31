@@ -31,5 +31,5 @@ urlpatterns = patterns('',
     url(r'^loudadmin/', include(admin.site.urls)),
 
     # site info
-    url(r'^(?P<content>(why|how_it_works|pricing|about_us))/$', views.site_info, name='site_info'),
+    url(r'^(?P<content>(why|how_it_works|pricing|faq))/$', views.site_info, name='site_info'),
 )
