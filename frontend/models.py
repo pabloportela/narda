@@ -59,7 +59,7 @@ class Meal(models.Model):
 
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.
-# Convention is to have static/kitchen/user_name as a directory where
+# Convention is to have static/pictures/kitchen/id as a directory where
 # kitchen photos would be put manually and referenced by menu textfield.
 
 
