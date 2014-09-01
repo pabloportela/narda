@@ -64,3 +64,18 @@ def book(request):
 def site_info(request, content):
     context = RequestContext(request, {'request': request, 'content':content})
     return render_to_response('site_info/'+content+'.html', context_instance=context)
+
+@login_required
+def my_meals(request):
+    upcoming_meal_list = Meal.objects.filter(
+        guest=request.user,
+        status='a',
+    ).order_by(
+        'scheduled_for'
+    ).select_related("kitchen")
+
+    context = RequestContext(request, {
+        'request': request,
+        'upcoming_meal_list': upcoming_meal_list
+    })
+    return render_to_response('dashboard/my_meals.html', context_instance=context)

@@ -32,4 +32,7 @@ urlpatterns = patterns('',
 
     # site info
     url(r'^(?P<content>(why|how_it_works|pricing|faq))/$', views.site_info, name='site_info'),
+
+    #my meals
+    url(r'^my_meals/$', views.my_meals, name='my_meals'),
 )

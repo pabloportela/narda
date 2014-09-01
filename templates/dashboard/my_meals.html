@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}My Meals{% endblock %}
+
+{% block content %}
+    {% if upcoming_meal_list %}
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <br/>
+            <br/>
+            {% for m in upcoming_meal_list %}
+                {% include "search/search_results_item.html"%}
+            {% endfor %}
+            </div>
+        </div>
+
+    {% else %}
+        No meals found! :(
+    {% endif %}
+
+{% endblock %}

@@ -31,7 +31,8 @@ class Meal(models.Model):
     created_at = models.DateTimeField('date created', auto_now=True)
     confirmed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
-    # Open, Pending, Accepted, Rejected, Expired
+    # Open, Accepted, Done, Noshow, Canceled
+    # Canceled: Chef canceled the meal. If the guest cancels it it will go to Open.
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
 
@@ -44,7 +45,7 @@ class Meal(models.Model):
 
     def book(self, user):
         self.guest = user
-        self.status = 'p'
+        self.status = 'a'
         self.save()
         # Guest confirmation
         Notification.notify('book_guest', {
