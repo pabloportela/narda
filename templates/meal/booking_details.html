@@ -3,9 +3,6 @@
 {% block title %}{{meal.kitchen.name}}{% endblock %}
 
 {% block content %}
-<div class="middle">
-
-    <div class="container">
     <h3 class="narda-orange">Voila! You have just booked a meal on "{{meal.kitchen.name}}"!</h3>
     <p>
     <br/>
@@ -16,7 +13,4 @@
     <br/>
     An email will be sent to {{user.email}} with this and further information about your booking.
     </p>
-    </div>
-
-</div>
 {% endblock %}

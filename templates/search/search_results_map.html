@@ -1,12 +1,12 @@
 {% if meal_list %}
-
-    <h4>Meals found:</h4>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <div class="row" data-offset-top="60" class="map">
-                <div id="map" data-spy="affix">
-                </div>
+        <br/>
+        <br/>
+        <div class="row" data-offset-top="60" class="map">
+            <div id="map">
             </div>
+        </div>
         </div>
     </div>
 
@@ -25,6 +25,7 @@
             center: myLocation,
             zoom: 16
         };
+
         var marker = new google.maps.Marker({
             position: myLocation,
             title: "Property Location"
@@ -38,41 +39,11 @@
 </script>
 
 <style>
-    .gmnoprint img {
-    max-width: none;
-    }
-
-    .panel:hover {
-        background-color: #eee;
-    }
-
     .map {
-        min-width: 250px;
-        min-height: 350px;
+        min-width: 450px;
+        min-height: 550px;
         width: 95%;
         height: 95%;
-    }
-
-    img {
-        max-width: 110%;
-        height: auto;
-    }
-
-    .clearfix {
-        clear: both;
-    }
-
-    .rowcolor {
-        background-color: #CCCCCC;
-    }
-
-    .padall {
-        padding: 10px;
-    }
-
-    .icon {
-        font-size: 23px;
-        color: #197BB5;
     }
 </style>
 

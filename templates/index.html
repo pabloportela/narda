@@ -3,15 +3,10 @@
 {% block title %}Narda{% endblock %}
 
 {% block content %}
-<div class="middle">
-
-    <div class="container">
 {% include "search/search_form.html" %}
 
 {% if meal_list %}
     {% include "search/search_results.html" %}
 {% endif %}
-    </div>
 
-</div>
 {% endblock %}
