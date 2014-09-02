@@ -39,11 +39,20 @@ def kitchen_detail(request, date, time, kitchen_slug):
     )
     if not meal:
         raise Http404
+
+    # for now it is fixed to 01.png up to 05.png
+    # TODO(pablo) maybe it should dyanmically read the dir? 
+    # however, we must have some file quantity policy
+    image_sources = []
+    for i in range(1,5):
+        image_sources.append("0"+str(i)+".png")
+
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
         'meal': meal,
         'available_seats': range(1,meal.kitchen.available_seats+1),
+        'image_sources': image_sources
     })
     return render_to_response('kitchen/kitchen_detail.html', context_instance=context)
 
