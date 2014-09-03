@@ -16,7 +16,9 @@
     </div>
     <div class="col-md-6">
 {% include "kitchen/kitchen_image_slider.html" %}
+    <hr/>
+    <img src="http://maps.googleapis.com/maps/api/staticmap?zoom=13&size=500x300&maptype=roadmap&markers=color:orange%7Clabel:S%7C{{meal.kitchen.latitude}},{{meal.kitchen.longitude}}">
     </div>
   </div>
 
-{% endblock %}
+    {% endblock %}
