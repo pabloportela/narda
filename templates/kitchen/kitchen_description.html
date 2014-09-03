@@ -7,16 +7,16 @@
         <p>{{meal.kitchen.summary}}</p>
 
         <h4 class="narda-orange">Menu</h4>
-        <p>{{meal.kitchen.menu | escape | linebreaks}}</p>
+        {{meal.kitchen.menu | escape | linebreaks}}
 
         <h4 class="narda-orange">House Rules</h4>
-        <p>{{meal.kitchen.house_rules | escape | linebreaks}}</p>
+        {{meal.kitchen.house_rules | escape | linebreaks}}
       </div>
       <div class="col-md-6">
-        <ul id="imageGallery">
+        <ul id="imageGallery" class="gallery list-unstyled">
           {% for i in image_number %}
-          <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/thumb/0{{i}}.png">
-            <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/0{{i}}.png" />
+          <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/120x120/0{{i}}.png">
+            <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/500x300/0{{i}}.png" />
           </li>
           {% endfor %}
         </ul>
@@ -29,9 +29,12 @@
     $(document).ready(function() {
         $('#imageGallery').lightSlider({
             gallery:true,
-            minSlide:{{sources.length}},
-            maxSlide:{{sources.length}},
-            currentPagerPosition:'left'
+            minSlide:1,
+            maxSlide:1,
+            currentPagerPosition:'left',
+            thumbWidth: 99,
+            thumbMargin: 2,
+            slideWidth: 500
         });
     });
     </script>

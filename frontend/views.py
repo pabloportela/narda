@@ -45,7 +45,7 @@ def kitchen_detail(request, date, time, kitchen_slug):
         'user': request.user,
         'meal': meal,
         'available_seats': range(1,meal.kitchen.available_seats+1),
-        'image_number': range(1,5)
+        'image_number': range(1,6)
     })
     return render_to_response('kitchen/kitchen_detail.html', context_instance=context)
 
