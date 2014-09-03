@@ -119,7 +119,11 @@ p {
     color: #3276b1;
 }
 
-.narda-footer, .narda-footer:hover {
+.narda-footer:hover {
+    color: #eee;
+}
+
+.narda-footer {
     color: #999;
 }
 
