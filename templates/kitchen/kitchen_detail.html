@@ -6,7 +6,17 @@
 
 {% block content %}
 
+
+
+  <div class="row">
+    <div class="col-md-6">
 {% include "kitchen/kitchen_description.html" %}
+{% include "meal/meal_confirmation_form.html" %}
 {% include "kitchen/kitchen_reviews.html" %}
+    </div>
+    <div class="col-md-6">
+{% include "kitchen/kitchen_image_slider.html" %}
+    </div>
+  </div>
 
 {% endblock %}

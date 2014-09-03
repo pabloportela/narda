@@ -1,0 +1,27 @@
+{% load staticfiles %}
+      <br />
+      <ul id="imageGallery" class="gallery list-unstyled lightSlider csSlide">
+        {% for i in image_number %}
+        <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/120x120/0{{i}}.png" style="width=auto;">
+          <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/500x300/0{{i}}.png" />
+        </li>
+        {% endfor %}
+      </ul>
+      <link type="text/css" rel="stylesheet" href="{% static "lightSlider/css/lightSlider.css" %}" />
+      <script src="{% static "lightSlider/js/jquery.lightSlider.js" %}"></script>
+      <script>
+      $(document).ready(function() {
+          $('#imageGallery').lightSlider({
+              gallery:true,
+              minSlide:1,
+              maxSlide:1,
+              currentPagerPosition:'left',
+              controls: false,
+              currentPagerPosition: 'middle',
+              slideMargin: 0,
+              slideWidth: 500,
+              thumbWidth: 97,
+              thumbMargin: 3,
+          });
+      });
+      </script>
