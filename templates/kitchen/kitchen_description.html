@@ -14,9 +14,9 @@
       </div>
       <div class="col-md-6">
         <ul id="imageGallery">
-          {% for src in image_sources %}
-          <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/thumb/{{src}}">
-            <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/{{src}}" />
+          {% for i in image_number %}
+          <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/thumb/0{{i}}.png">
+            <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/0{{i}}.png" />
           </li>
           {% endfor %}
         </ul>
