@@ -3,7 +3,7 @@
       <ul id="imageGallery" class="gallery list-unstyled lightSlider csSlide">
         {% for i in image_number %}
         <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/120x120/0{{i}}.png" style="width=auto;">
-          <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/500x300/0{{i}}.png" />
+          <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/500x300/0{{i}}.png" width="500" height="300"/>
         </li>
         {% endfor %}
       </ul>

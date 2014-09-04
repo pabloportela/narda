@@ -58,7 +58,6 @@ class Meal(models.Model):
             'meal': self,
         })
 
-
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.
 # Convention is to have static/pictures/kitchen/id as a directory where
 # kitchen photos would be put manually and referenced by menu textfield.
@@ -79,13 +78,15 @@ class Inquiry(models.Model):
     committed = models.BooleanField()
 
 
-class Review(models.Model):
-    created_at = models.DateTimeField('date created')
-    reviewer = models.ForeignKey(User, related_name='reviewer')
-    reviewed = models.ForeignKey(User, related_name='reviewed')
+class KitchenReview(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(default=None)
+    guest = models.ForeignKey(User, related_name='reviews')
+    kitchen = models.ForeignKey(Kitchen, related_name='reviews')
+    meal = models.ForeignKey(Meal, related_name='review')
     rating = models.IntegerField()
-    # who has been reviewed: Guest, Chef
-    target_type = models.CharField(max_length=1)
+    review = models.TextField()
+    token = models.CharField(max_length=255,db_index=True)
 
 
 class Invoice(models.Model):
