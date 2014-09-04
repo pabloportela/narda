@@ -139,3 +139,4 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'Change this via env vars'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/facebook/'
