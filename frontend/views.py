@@ -2,9 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-
 from datetime import datetime, timedelta
-
 from frontend.models import Meal
 
 
