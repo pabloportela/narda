@@ -69,8 +69,15 @@ def site_info(request, content):
 
 @login_required
 def my_meals(request):
-    upcoming_meal_list = Meal.objects.filter(
+    upcoming_dine_meal_list = Meal.objects.filter(
         guest=request.user,
+        status='a',
+    ).order_by(
+        'scheduled_for'
+    ).select_related("kitchen")
+
+    upcoming_cook_meal_list = Meal.objects.filter(
+        kitchen__chef=request.user,
         status='a',
     ).order_by(
         'scheduled_for'
@@ -78,6 +85,7 @@ def my_meals(request):
 
     context = RequestContext(request, {
         'request': request,
-        'upcoming_meal_list': upcoming_meal_list
+        'upcoming_dine_meal_list': upcoming_dine_meal_list,
+        'upcoming_cook_meal_list': upcoming_cook_meal_list,
     })
     return render_to_response('dashboard/my_meals.html', context_instance=context)

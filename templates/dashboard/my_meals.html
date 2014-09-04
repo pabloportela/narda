@@ -3,19 +3,44 @@
 {% block title %}My Meals{% endblock %}
 
 {% block content %}
-    {% if upcoming_meal_list %}
+    {% if upcoming_dine_meal_list or upcoming_cook_meal_list %}
+        <script>
+          $(function () {
+            $('#userTab a:first').tab('show')
+          })
+        </script>
+        <ul class="nav nav-tabs" role="tablist" id="userTab">
+          <li class="active"><a href="#dine" role="tab" data-toggle="tab">To Dine</a></li>
+          <li><a href="#cook" role="tab" data-toggle="tab">To Cook</a></li>
+        </ul>
+
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <br/>
             <br/>
-            {% for m in upcoming_meal_list %}
-                {% include "search/search_results_item.html"%}
-            {% endfor %}
+                <div class="tab-content">
+                    <div class="tab-pane active" id="dine">
+                        {% for m in upcoming_dine_meal_list %}
+                            {% include "dashboard/my_meals_dine_item.html" %}
+                        {% endfor %}
+                    </div>
+                    <div class="tab-pane" id="cook">
+                        {% for m in upcoming_cook_meal_list %}
+                            {% include "dashboard/my_meals_cook_item.html" %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
-
     {% else %}
-        No meals found! :(
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body row">
+                        You don't have any meals yet... are you getting hungry?
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
-
 {% endblock %}
