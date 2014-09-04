@@ -1,12 +1,35 @@
 {% load staticfiles %}
+        <center>
+
         <h2 class="narda-orange">
-        <center>{{meal.kitchen.name}}</center>
+        {{meal.kitchen.name}}
         </h2>
         <p class="text-center">{{meal.kitchen.summary}}</p>
+
+        </center>
+
+          <div>
+            <h4>&nbsp;<span class="glyphicon glyphicon-time narda-blue"></span> {{meal.scheduled_for}}</h4>
+            <h4>&nbsp;<span class="glyphicon glyphicon-map-marker narda-blue"></span> {{meal.kitchen.address}}</h4>
+            <h4>&nbsp;Dishes from <span class="glyphicon glyphicon-euro narda-blue"></span> {{meal.kitchen.dishes_from}}</h4>
+            <h4>&nbsp;<span class="glyphicon glyphicon-user narda-blue"></span> Up to {{meal.kitchen.available_seats}} seats</h4>
+          </div>
+          <div>
+          <center>
+            <br/>
+            {% include "meal/meal_book_button.html" %}
+          </center>
+          </div>
+
+        <center>
 
         <h4 class="narda-orange">Menu</h4>
         {{meal.kitchen.menu | escape | linebreaks}}
 
+        <h4 class="narda-orange">Location</h4>
+          <img src="http://maps.googleapis.com/maps/api/staticmap?zoom=13&size=300x200&maptype=roadmap&markers=color:orange%7Clabel:S%7C{{meal.kitchen.latitude}},{{meal.kitchen.longitude}}">
+
         <h4 class="narda-orange">House Rules</h4>
         {{meal.kitchen.house_rules | escape | linebreaks}}
 
+        </center>

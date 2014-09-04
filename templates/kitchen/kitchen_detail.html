@@ -6,18 +6,20 @@
 
 {% block content %}
 
-
-
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
 {% include "kitchen/kitchen_description.html" %}
-{% include "meal/meal_confirmation_form.html" %}
-{% include "kitchen/kitchen_reviews.html" %}
+    <br/>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-8">
 {% include "kitchen/kitchen_image_slider.html" %}
-    <hr/>
-    <img src="http://maps.googleapis.com/maps/api/staticmap?zoom=13&size=500x300&maptype=roadmap&markers=color:orange%7Clabel:S%7C{{meal.kitchen.latitude}},{{meal.kitchen.longitude}}">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+{% include "meal/meal_confirmation_form.html" %}
+    <br/>
+{% include "kitchen/kitchen_reviews.html" %}
     </div>
   </div>
 

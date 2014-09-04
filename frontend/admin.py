@@ -7,4 +7,3 @@ admin.site.register(Meal)
 admin.site.register(KitchenReview)
 admin.site.register(Invoice)
 
-# Register your models here.
