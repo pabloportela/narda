@@ -4,12 +4,12 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <div class="col-md-3">
-                                <a href="{% url "kitchen_detail" date=m.scheduled_for.date time=m.time_for_url kitchen_slug=m.kitchen.slug %}">
+                                <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.hour_formatted minute=m.minute_formatted kitchen_slug=m.kitchen.slug %}">
                                     <img src="/static/pictures/kitchens/{{m.kitchen.id}}/120x120/01.png" height="100" width="100"/>
                                 </a>
                             </div>
                             <div class="col-md-5">
-                                <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.scheduled_for.hour_formatted minute=m.scheduled_for.minute_formatted kitchen_slug=m.kitchen.slug %}">
+                                <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.hour_formatted minute=m.minute_formatted kitchen_slug=m.kitchen.slug %}">
                                     <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
                                 </a>
                                 <br/>

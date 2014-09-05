@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/$',
         views.search, name='search'),
 
-    # eg. book/123123
+    # eg. book/
     url(r'^book/$', views.book, name='book'),
 
     # backoffice
