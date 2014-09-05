@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 
     # eg. kitchen/johnskitchen/2014-08-11/12:35
     url(
-        r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<time>\d{2}:\d{2})/$',
+        r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<hour>\d{2})/(?P<minute>\d{2})/$',
         views.kitchen_detail,
         name='kitchen_detail'),
 

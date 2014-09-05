@@ -30,10 +30,10 @@ def search(request, date):
     return render_to_response('index.html', context_instance=context)
 
 
-def kitchen_detail(request, date, time, kitchen_slug):
+def kitchen_detail(request, date, hour, minute, kitchen_slug):
     meal = Meal.objects.select_related(
         'kitchen').get(kitchen__slug=kitchen_slug,
-        scheduled_for=date + " " + time
+        scheduled_for=date + " " + hour + ":" + minute
     )
     if not meal:
         raise Http404

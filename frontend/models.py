@@ -36,14 +36,17 @@ class Meal(models.Model):
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
 
-    def time(self):
-        return "%02d:%02d" % (
-            self.scheduled_for.hour, self.scheduled_for.minute)
+    def hour_formatted(self):
+        return "%02d" % (self.scheduled_for.hour)
+
+    def minute_formatted(self):
+        return "%02d" % (self.scheduled_for.minute)
 
     def description(self):
         return 'This is the meal description'
 
-    def book(self, user):
+    def book(self, user, number_of_guests):
+        self.number_of_guests = number_of_guests
         self.guest = user
         self.status = 'a'
         self.save()
