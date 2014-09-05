@@ -5,11 +5,14 @@ from django.contrib import admin
 
 admin.autodiscover()
 
-urlpatterns = patterns('',
-    # 3rd party authentication
+urlpatterns = patterns(
+    '',
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
-    url(r'^social/', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('frontend.urls')),
+
+    url(r'^social/',
+        include('social.apps.django_app.urls', namespace='social')),
 
     # homepage
     url(r'^$', views.index, name='index'),
