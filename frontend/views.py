@@ -11,13 +11,14 @@ def index(request):
     return render_to_response('index.html', context_instance=context)
 
 
-def search(request, date):
+def search(request, date, number_of_guests):
     arg_datetime = datetime.strptime(date, '%Y-%m-%d')
     one_day = timedelta(1)
     meal_list = Meal.objects.filter(
         scheduled_for__lt=(arg_datetime + one_day),
         scheduled_for__gt=arg_datetime,
-        status__exact='o'
+        status__exact='o',
+        kitchen__available_seats__gte=int(number_of_guests)
     ).order_by(
         'scheduled_for'
     ).select_related('kitchen')
@@ -25,7 +26,8 @@ def search(request, date):
         'request': request,
         'user': request.user,
         'meal_list': meal_list,
-        'date': date
+        'date': date, 
+        'number_of_guests': number_of_guests
     })
     return render_to_response('index.html', context_instance=context)
 

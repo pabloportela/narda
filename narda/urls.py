@@ -21,7 +21,7 @@ urlpatterns = patterns('',
         name='kitchen_detail'),
 
     # eg. search/date/2014-09-17/
-    url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/$',
+    url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/guests/(?P<number_of_guests>\d{1})/$',
         views.search, name='search'),
 
     # eg. book/
