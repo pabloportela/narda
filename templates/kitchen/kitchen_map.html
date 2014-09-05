@@ -6,7 +6,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Kitchen's Location</h4>
+        <h4 class="modal-title" id="myModalLabel">{{meal.kitchen.name}}'s location</h4>
       </div>
       <div class="modal-body">
         <div id="map" class="map">
@@ -17,29 +17,36 @@
 
 <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
-    function init_map(index) {
-        var myLocation = new google.maps.LatLng({{meal.kitchen.latitude}},{{meal.kitchen.longitude}});
-        var mapOptions = {
-            center: myLocation,
-            zoom: 15
-        };
-        var marker = new google.maps.Marker({
-            position: myLocation,
-            title: "{{meal.kitchen.name}}"
-        });
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        marker.setMap(map);
-    }
+function init_map() {
+    var myLocation = new google.maps.LatLng({{meal.kitchen.latitude}},{{meal.kitchen.longitude}});
+    var mapOptions = {
+        center: myLocation,
+        zoom: 15
+    };
+    var marker = new google.maps.Marker({
+        position: myLocation,
+        title: "{{meal.kitchen.name}}"
+    });
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    marker.setMap(map);
 
-    $(document)
-    init_map(0);
+    $("#kitchen_map_modal").on("shown.bs.modal", function () {
+        var currentCenter = map.getCenter();
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(currentCenter);
+    });
+}
+
+$(document).ready(function() {
+    init_map();
+})
 </script>
 
 <style>
-    .map {
-        min-width: 300px;
-        min-height: 470px;
-        width: 100%;
-        height: 100%;
-    }
+.map {
+    min-width: 300px;
+    min-height: 470px;
+    width: 100%;
+    height: 100%;
+}
 </style>
