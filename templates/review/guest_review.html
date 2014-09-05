@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Review your meal at {{kitchen.name}}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      {% include "kitchen/kitchen_description.html" %}
+    </div>
+    <div class="col-md-6">
+      <form action="" method="post" accept-charset="utf-8">
+      {% csrf_token %}
+      <p>Your Review</p>
+      {{ form.non_field_errors }}
+      <div class="reviewWrapper">
+        {{ form.review.errors }}
+        <label for="">Review</label>
+        {{ form.review }}
+
+      </div>
+      <div class="ratingWrapper">
+        {{ form.rating.errors }}
+        <label for=""></label>
+        {{ form.rating }}
+
+      </div>
+      <div class="submit-button">
+        <input type="submit" name="submit" id="" value="Submit" />
+      </div>
+      </form>
+    </div>
+  </div>
+{% endblock %}

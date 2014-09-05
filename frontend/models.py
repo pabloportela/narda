@@ -83,13 +83,15 @@ class Inquiry(models.Model):
 
 class KitchenReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField(default=None)
+    reviewed_at = models.DateTimeField(default=None, null=True)
     guest = models.ForeignKey(User, related_name='reviews')
     kitchen = models.ForeignKey(Kitchen, related_name='reviews')
-    meal = models.ForeignKey(Meal, related_name='review')
-    rating = models.IntegerField()
-    review = models.TextField()
-    token = models.CharField(max_length=255,db_index=True)
+    meal = models.ForeignKey(Meal)
+    rating = models.IntegerField(null=True)
+    review = models.TextField(null=True)
+    token = models.CharField(
+        max_length=255, db_index=True
+    )
 
 
 class Invoice(models.Model):
