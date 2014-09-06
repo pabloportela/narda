@@ -15,7 +15,7 @@
             </span>
             {% csrf_token %}
             <input type="hidden" name="meal_id" value="{{meal.id}}">
-
+            <input type="hidden" name="number_of_guests" id="hidden_number_of_guests">
           </div>
 
           <div class="modal-footer">
@@ -30,7 +30,14 @@
     <script>
     $(document).ready(function() {
         if (/confirm/.test(window.location)) {
+            $('#hidden_number_of_guests').val();
             $('#meal_confirmation_modal').modal();
         }
+    })
+
+    $('#meal_confirmation_modal').on('shown.bs.modal', function (e) {
+        // TODO: deal with this parameter when comin back form facebook authentication
+        number_of_guests = $('#select_number_of_guests').val();
+        $('#hidden_number_of_guests').val(number_of_guests);
     })
     </script>

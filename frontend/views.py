@@ -60,7 +60,8 @@ def kitchen_detail(request, date, hour, minute, kitchen_slug):
 def book(request):
     meal_id = request.POST.get('meal_id')
     meal = get_object_or_404(Meal, id=meal_id)
-    meal.book(request.user)
+    number_of_guests = request.POST.get('number_of_guests')
+    meal.book(request.user,number_of_guests)
 
     context = RequestContext(request, {
         'request': request,

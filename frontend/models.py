@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from autoslug import AutoSlugField
+from datetime import datetime
 
 from notification.models import Notification
 
@@ -48,6 +49,7 @@ class Meal(models.Model):
     def book(self, user, number_of_guests):
         self.number_of_guests = number_of_guests
         self.guest = user
+        self.confirmed_at = datetime.now();
         self.status = 'a'
         self.save()
         # Guest confirmation

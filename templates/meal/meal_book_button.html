@@ -1,6 +1,6 @@
 <form class="form-inline" role="form" id="book_confirmation_form">
   <div class="form-group">
-  <select class="form-control form-element-narda" id="number_of_seats" required="true" placeholder="Number of seats">
+  <select class="form-control form-element-narda" id="select_number_of_guests" required="true" placeholder="Number of guests">
     {% for i in available_seats %}
     <option value="{{i}}">{{i}} Guests</option>
     {% endfor %}
