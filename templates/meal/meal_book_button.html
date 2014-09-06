@@ -1,7 +1,23 @@
+<form class="form-inline" role="form" id="book_confirmation_form">
+  <div class="form-group">
+  <select class="form-control form-element-narda" id="number_of_seats" required="true" placeholder="Number of seats">
+    {% for i in available_seats %}
+    <option value="{{i}}">{{i}} Guests</option>
+    {% endfor %}
+    </select>
     {% if user and user.is_anonymous %}
     <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path}}?confirm" class="btn btn-primary btn-lg" role="button" >Sign in through Facebook and Book</a>
     {% else %}
-    <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#meal_confirmation_modal">
+    <button class="btn btn-primary form-element-narda" data-toggle="modal" data-target="#meal_confirmation_modal">
         Book this meal
     </button>
     {% endif %}
+  </div>
+</form>
+
+<script>
+$('#book_confirmation_form').submit(function (e) {
+  e.preventDefault();
+  return -1;
+});
+</script>

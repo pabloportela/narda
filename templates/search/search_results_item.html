@@ -1,24 +1,25 @@
 {% load staticfiles %}
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default" style="border-radius: 0px;">
                         <div class="panel-body row">
                             <div class="col-md-3">
                                 <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.hour_formatted minute=m.minute_formatted kitchen_slug=m.kitchen.slug %}">
-                                    <img src="/static/pictures/kitchens/{{m.kitchen.id}}/120x120/01.png" height="100" width="100"/>
+                                    <img src="/static/pictures/kitchens/{{m.kitchen.id}}/120x120/01.png" height="115" width="115"/>
                                 </a>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.hour_formatted minute=m.minute_formatted kitchen_slug=m.kitchen.slug %}">
                                     <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
                                 </a>
                                 <br/>
                                 {{m.kitchen.summary}}
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <h5><span class="glyphicon glyphicon-time narda-blue"></span> {{m.scheduled_for}}</h5>
                                 <h5><span class="glyphicon glyphicon-map-marker narda-blue"></span> {{m.kitchen.address}}</h5>
-                                <h5>Dishes from <span class="glyphicon glyphicon-euro narda-blue"></span> {{m.kitchen.dishes_from}}</h5>
+                                <h5><span class="glyphicon glyphicon-euro narda-blue"></span> {{m.kitchen.dishes_from}} is starting dish price</h5>
+                                <h5>&nbsp;<span class="glyphicon glyphicon-user narda-blue"></span> Up to {{meal.kitchen.available_seats}} guests</h5>
                             </div>
                         </div>
                     </div>
