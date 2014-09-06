@@ -80,24 +80,35 @@ def site_info(request, content):
 
 @login_required
 def my_meals(request):
-    upcoming_dine_meal_list = Meal.objects.filter(
-        guest=request.user,
-        status='a',
-    ).order_by(
-        'scheduled_for'
-    ).select_related("kitchen")
+    dine_meals = {}
+    for meal_type, status in { 'upcoming':'a', 'done':'d'}.iteritems():
+        dine_meals[meal_type] = Meal.objects.filter(
+            guest=request.user,
+            status=status,
+        ).order_by(
+            'scheduled_for'
+        ).select_related("kitchen")
 
-    upcoming_cook_meal_list = Meal.objects.filter(
-        kitchen__chef=request.user,
-        status='a',
-    ).order_by(
-        'scheduled_for'
-    ).select_related("kitchen")
+    cook_meals = {}
+    for meal_type, status in { 'open':'o', 'upcoming':'a', 'done':'d', 'cancelled':'c' }.iteritems():
+        cook_meals[meal_type] = Meal.objects.filter(
+            kitchen__chef=request.user,
+            status=status,
+        ).order_by(
+            'scheduled_for'
+        ).select_related("kitchen")
 
     context = RequestContext(request, {
         'request': request,
-        'upcoming_dine_meal_list': upcoming_dine_meal_list,
-        'upcoming_cook_meal_list': upcoming_cook_meal_list,
+        'has_meals' : any(dine_meals.values()) or any(cook_meals.values()),
+
+        'dine_meal_list_upcoming' : dine_meals['upcoming' ],
+        'dine_meal_list_done'     : dine_meals['done'     ],
+
+        'cook_meal_list_upcoming' : cook_meals['upcoming' ],
+        'cook_meal_list_open'     : cook_meals['open'     ],
+        'cook_meal_list_cancelled': cook_meals['cancelled'],
+        'cook_meal_list_done'     : cook_meals['done'     ],
     })
     return render_to_response(
         'dashboard/my_meals.html', context_instance=context)

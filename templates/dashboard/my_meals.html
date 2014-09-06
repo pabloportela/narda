@@ -3,15 +3,25 @@
 {% block title %}My Meals{% endblock %}
 
 {% block content %}
-    {% if upcoming_dine_meal_list or upcoming_cook_meal_list %}
+    {% if has_meals %}
         <script>
           $(function () {
-            $('#userTab a:first').tab('show')
-          })
+            $('#userTab a:first').tab('show');
+            $('.my_dropdown_item').click(function(e){
+                var mealtype = $(this).data('mealtype');
+                var mealstatus = $(this).data('mealstatus');
+                var text = $(this).text();
+                if (mealtype && mealstatus && text) {
+                    $('.' + mealtype + ' .meal_items').hide();
+                    $('.' + mealtype + ' #' + mealstatus).show();
+                    $('.' + mealtype + ' #meal_selector_label').text(text);
+                }
+            });
+          });
         </script>
         <ul class="nav nav-tabs" role="tablist" id="userTab">
-          <li class="active"><a href="#dine" role="tab" data-toggle="tab">To Dine</a></li>
-          <li><a href="#cook" role="tab" data-toggle="tab">To Cook</a></li>
+          <li class="active"><a href="#tab_dine" role="tab" data-toggle="tab">To Dine</a></li>
+          <li><a href="#tab_cook" role="tab" data-toggle="tab">To Cook</a></li>
         </ul>
 
         <div class="row">
@@ -19,16 +29,83 @@
             <br/>
             <br/>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="dine">
-                        {% for m in upcoming_dine_meal_list %}
-                            {% include "dashboard/my_meals_dine_item.html" %}
-                        {% endfor %}
+                    {#--------------------- TO DINE TAB ---------------------#}
+                    <div class="tab-pane active dine" id="tab_dine">
+                        {#------- Selector -------#}
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <h4 style='display:inline-block'> Show: </h4>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        <span id="meal_selector_label">Upcoming Meals</span>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a class='my_dropdown_item' href="#" data-mealtype="dine" data-mealstatus="upcoming">Upcoming Meals</a></li>
+                                        <li><a class='my_dropdown_item' href="#" data-mealtype="dine" data-mealstatus="done">Past Meals</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        {#------- Items -------#}
+                        <div class='meal_items' id="upcoming">
+                            {% for m in dine_meal_list_upcoming %}
+                                {% include "dashboard/my_meals_dine_item.html" %}
+                            {% endfor %}
+                        </div>
+                        <div class='meal_items' id="done" style="display:none">
+                            {% for m in dine_meal_list_done %}
+                                {% include "dashboard/my_meals_dine_item.html" %}
+                            {% endfor %}
+                        </div>
                     </div>
-                    <div class="tab-pane" id="cook">
-                        {% for m in upcoming_cook_meal_list %}
-                            {% include "dashboard/my_meals_cook_item.html" %}
-                        {% endfor %}
+                    {#--------------------- TO COOK TAB ---------------------#}
+                    <div class="tab-pane cook" id="tab_cook">
+                        {#------- Selector -------#}
+                        <div class="row">
+                            <div class="col-md-8 col-md-offset-2">
+                                <h4 style='display:inline-block'> Show: </h4>
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    <span id="meal_selector_label">Upcoming Meals</span>
+                                    <span class="caret"></span>
+                                  </button>
+                                  <ul class="dropdown-menu" role="menu">
+                                    <li><a class='my_dropdown_item' href="#" data-mealtype="cook" data-mealstatus="upcoming">Upcoming Meals</a></li>
+                                    <li><a class='my_dropdown_item' href="#" data-mealtype="cook" data-mealstatus="open">Open Meals</a></li>
+                                    <li><a class='my_dropdown_item' href="#" data-mealtype="cook" data-mealstatus="cancelled">Cancelled Meals</a></li>
+                                    <li><a class='my_dropdown_item' href="#" data-mealtype="cook" data-mealstatus="done">Past Meals</a></li>
+                                  </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                        {#------- Items -------#}
+                        <div class='meal_items' id="upcoming">
+                            {% for m in cook_meal_list_upcoming %}
+                                {% include "dashboard/my_meals_cook_item.html" %}
+                            {% endfor %}
+                        </div>
+                        <div class='meal_items' id="open" style="display:none">
+                            {% for m in cook_meal_list_open %}
+                                {% include "dashboard/my_meals_cook_item.html" %}
+                            {% endfor %}
+                        </div>
+                        <div class='meal_items' id="cancelled" style="display:none">
+                            {% for m in cook_meal_list_cancelled %}
+                                {% include "dashboard/my_meals_cook_item.html" %}
+                            {% endfor %}
+                        </div>
+                        <div class='meal_items' id="done" style="display:none">
+                            {% for m in cook_meal_list_done %}
+                                {% include "dashboard/my_meals_cook_item.html" %}
+                            {% endfor %}
+                        </div>
                     </div>
+                    {#--------------------- ANOTHER TAB ---------------------#}
                 </div>
             </div>
         </div>
