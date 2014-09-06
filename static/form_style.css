@@ -1,0 +1,13 @@
+.form-element-narda {
+  font-size: 14px;
+  height: 40px;
+  margin: 0px;
+  border-radius: 0;
+  border: 1px solid #dce0e0;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+
+.location-wrapper {
+  position: relative;
+}
