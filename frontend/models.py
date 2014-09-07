@@ -33,7 +33,7 @@ class Meal(models.Model):
     confirmed_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
     # Open, Accepted, Done, Noshow, Canceled
-    # Canceled: Chef canceled the meal. If the guest cancels it it will go to Open.
+    # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
 

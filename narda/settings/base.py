@@ -64,7 +64,6 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'elbambi_narda',
         'USER': 'elbambi_narda',
-        'PASSWORD': 'Add NARDA_DB_PASSWORD as env var',
         'HOST': 'localhost',
     }
 }
@@ -131,14 +130,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'social.apps.django_app.context_processors.login_redirect',
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'Change this via env vars'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Change this via env vars'
-
-SOCIAL_AUTH_FACEBOOK_KEY = 'Change this via env vars'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'Change this via env vars'
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/facebook/'
 
-X_FRAME_OPTIONS = 'ALLOW'

@@ -37,7 +37,7 @@ def search(request, date, number_of_guests):
     return render_to_response('index.html', context_instance=context)
 
 
-def kitchen_detail(request, date, hour, minute, kitchen_slug):
+def kitchen_detail(request, date, hour, minute, kitchen_slug, number_of_guests=None):
     meal = Meal.objects.select_related('kitchen').get(
         kitchen__slug=kitchen_slug,
         scheduled_for=date + " " + hour + ":" + minute
@@ -50,7 +50,8 @@ def kitchen_detail(request, date, hour, minute, kitchen_slug):
         'user': request.user,
         'meal': meal,
         'available_seats': range(1, meal.kitchen.available_seats + 1),
-        'image_number': range(1, 6)
+        'image_number': range(1, 6),
+        'number_of_guests': number_of_guests
     })
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)

@@ -5,8 +5,10 @@
     <option value="{{i}}">{{i}} Guests</option>
     {% endfor %}
     </select>
+  </div>
+  <div>
     {% if user and user.is_anonymous %}
-    <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path}}?confirm" class="btn btn-primary btn-lg" role="button" >Sign in through Facebook and Book</a>
+    <button class="btn btn-primary form-element-narda" role="button" id="button_redirect_to_facebook_auth">Sign in through Facebook and Book</a>
     {% else %}
     <button class="btn btn-primary form-element-narda" data-toggle="modal" data-target="#meal_confirmation_modal">
         Book this meal
@@ -16,8 +18,18 @@
 </form>
 
 <script>
-$('#book_confirmation_form').submit(function (e) {
-  e.preventDefault();
-  return -1;
+$(document).ready(function () {
+  $('#book_confirmation_form').submit(function (e) {
+    e.preventDefault();
+    return -1;
+  });
+
+  $('#button_redirect_to_facebook_auth').click(function() {
+    number_of_guests = $('#select_number_of_guests').val();
+    url = '{% url 'social:begin' 'facebook' %}?next={{ request.path }}/confirm/guests/{{number_of_guests}}';
+    //url = '{% url 'social:begin' 'facebook' %}?next={{ request.path }}?confirm';
+    //alert('will redirect to '+url);
+    window.location = url;
+  });
 });
 </script>
