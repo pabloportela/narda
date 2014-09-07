@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from autoslug import AutoSlugField
 from datetime import datetime
+from django.core import exceptions
 
 from notification.models import Notification
 
@@ -34,6 +35,9 @@ class Meal(models.Model):
     cancelled_at = models.DateTimeField(blank=True, null=True)
     # Open, Accepted, Done, Noshow, Canceled
     # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
+    # TODO(pablo) isn't "Open" a suitable state for a kitchen rather than a meal?
+    # maybe we could use Available here, but already collides with Accepted.
+    # how about "Avialable" and "Confirmed" respectively? that also goes with the datetime fields
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
 
@@ -46,12 +50,22 @@ class Meal(models.Model):
     def description(self):
         return 'This is the meal description'
 
+# TODO(pablo) we probably need out custom exception class, but this is ok for now
     def book(self, user, number_of_guests):
+        # validation
+        if self.status != 'o':
+            raise Exception('The meal is not available anymore')
+
+        if int(number_of_guests) > int(self.kitchen.available_seats):
+            raise Exception('The available kitchen seats are not enough for your meal request')
+
+        # booking core
         self.number_of_guests = number_of_guests
         self.guest = user
         self.confirmed_at = datetime.now();
         self.status = 'a'
         self.save()
+
         # Guest confirmation
         Notification.notify('book_guest', {
             'to_address': self.guest.email,

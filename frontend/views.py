@@ -3,6 +3,8 @@ from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+from django.db import IntegrityError, DatabaseError, transaction
+from django.core.exceptions import ObjectDoesNotExist
 
 from frontend.models import Meal, KitchenReview
 from frontend.forms import KitchenReviewForm
@@ -56,13 +58,31 @@ def kitchen_detail(request, date, hour, minute, kitchen_slug, number_of_guests=N
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
 
+'''
+mysql currently does not support nowait=True so in the case of booking concurrency,
+the unlucky second booker with wait in vain, but will receive the proper error
+message and hopefully we won't have overbookings.
+
+jesus christ, I hope we have bookings at all.
+
+anyway, it is important to lock, because at the beggining there won't be
+many chefs and we will soon charge money upon booking.
+
+nlso, ow the book method has not just the booking but the post notifications.
+it all goes into the transaction, maybe we should change that
+'''
 
 @login_required
 def book(request):
     meal_id = request.POST.get('meal_id')
-    meal = get_object_or_404(Meal, id=meal_id)
     number_of_guests = request.POST.get('number_of_guests')
-    meal.book(request.user,number_of_guests)
+
+    try:
+        with transaction.atomic():
+            meal = Meal.objects.select_for_update().get(id=meal_id)
+            meal.book(request.user,number_of_guests)
+    except ObjectDoesNotExist:
+        print("Non existent meal")
 
     context = RequestContext(request, {
         'request': request,
