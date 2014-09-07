@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 from autoslug import AutoSlugField
 from datetime import datetime
 from django.core import exceptions
-
 from notification.models import Notification
 
 
@@ -62,25 +62,41 @@ class Meal(models.Model):
         # booking core
         self.number_of_guests = number_of_guests
         self.guest = user
-        self.confirmed_at = datetime.now();
+        self.confirmed_at = datetime.now()
         self.status = 'a'
         self.save()
-
+        meal_nr = self._generate_meal_number()
         # Guest confirmation
         Notification.notify('book_guest', {
             'to_address': self.guest.email,
             'meal': self,
+            'meal_nr': meal_nr,
         })
         # Chef confirmation
         Notification.notify('book_chef', {
             'to_address': self.kitchen.chef.email,
             'meal': self,
+            'meal_nr': meal_nr,
         })
+
+    def _generate_meal_number(self):
+        length = 9
+        for len_try in range(3):
+            for rand_try in range (30):
+                meal_nr = get_random_string(length=length, allowed_chars='123456789')
+                obj, created = MealId_MealNr.objects.get_or_create(meal_nr = meal_nr, meal = self)
+                if created:
+                    return meal_nr
+            length = length + 1
+        raise Exception('Gave up trying to generate unique meal_nr')
 
 # TODO(tayfun): Photos need to be added to kitchen as a gallery.
 # Convention is to have static/pictures/kitchen/id as a directory where
 # kitchen photos would be put manually and referenced by menu textfield.
 
+class MealId_MealNr(models.Model):
+    meal_nr = models.IntegerField(primary_key=True)
+    meal = models.ForeignKey(Meal, db_index=True)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
