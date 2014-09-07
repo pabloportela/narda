@@ -4,11 +4,10 @@
         <br/>
         <br/>
         {% for m in meal_list %}
-            {% include "search/search_results_item.html" %}
+            {% include "search/search_results_item.html" with number_of_guests=number_of_guests %}
         {% endfor %}
         </div>
     </div>
-
 <style>
 .panel:hover {
     background-color: #eee;
@@ -17,5 +16,9 @@
 </style>
 
 {% else %}
-    No meals found! :(
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    No meals found! Try changing your search filters.
+        </div>
+    </div>
 {% endif %}

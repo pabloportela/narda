@@ -1,29 +1,51 @@
 <form class="form-inline" role="form" id="book_confirmation_form">
   <div class="form-group">
-  <select class="form-control form-element-narda" id="select_number_of_guests" required="true" placeholder="Number of guests">
+    <select class="form-control form-element-narda" id="select_number_of_guests" required="true" placeholder="Number of guests">
     {% for i in available_seats %}
     <option value="{{i}}">{{i}} Guests</option>
     {% endfor %}
     </select>
   </div>
-  <div>
-    {% if user and user.is_anonymous %}
-    <button class="btn btn-primary form-element-narda" role="button" id="button_redirect_to_facebook_auth">Sign in through Facebook and Book</a>
-    {% else %}
+  <div class="form-group">
+    {% if user and not user.is_anonymous %}
     <button class="btn btn-primary form-element-narda" data-toggle="modal" data-target="#meal_confirmation_modal">
-        Book this meal
+    Book this meal
+    </button>
+    {% else %}
+    <button class="btn btn-primary form-element-narda" role="button" id="button_redirect_to_facebook_auth">
+    Sign in through Facebook and Book
     </button>
     {% endif %}
   </div>
 </form>
 
 <script>
-$(document).ready(function () {
+//TODO(pablo) refactor the search filters, the booking parameters, the persistence throughout 3rd party auth,
+// and how do all these work together. in other words, refactor the shit of out this.
+
+$(document).ready(function() {
+// always prevent the main form from being sent, but trigger the modal
   $('#book_confirmation_form').submit(function (e) {
     e.preventDefault();
     return -1;
   });
 
+// if we received number of guests as a parameter we preselect the combo
+{% if number_of_guests %}
+  $('#select_number_of_guests').val({{number_of_guests}});
+{% endif %}
+
+// always populate the modal form from the outer controls
+$('#meal_confirmation_modal').on('shown.bs.modal', function() {
+  number_of_guests = $('#select_number_of_guests').val();
+  // update form field
+  $('#hidden_number_of_guests').val(number_of_guests);
+  // update message
+  $('#p_confirmation_message').text('You are about to confirm your booking the meal taking place at {{meal.kitchen.name}} ({{meal.kitchen.address}}) on {{meal.scheduled_for}} for '+number_of_guests+' guests.');
+})
+
+// user not logged in, button redirects to facebook
+{% if not user or user.is_anonymous %}
   $('#button_redirect_to_facebook_auth').click(function() {
     number_of_guests = $('#select_number_of_guests').val();
     url = '{% url 'social:begin' 'facebook' %}?next={{ request.path }}/confirm/guests/{{number_of_guests}}';
@@ -31,5 +53,11 @@ $(document).ready(function () {
     //alert('will redirect to '+url);
     window.location = url;
   });
+{% endif %}
+
+  if (/confirm/.test(window.location)) {
+    $('#meal_confirmation_modal').modal();
+  }
+
 });
 </script>

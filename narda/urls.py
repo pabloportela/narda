@@ -17,21 +17,20 @@ urlpatterns = patterns(
     # homepage
     url(r'^$', views.index, name='index'),
 
-    # eg. kitchen/johnskitchen/2014-08-11/12:35
-    url(
-        r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<hour>\d{2})/(?P<minute>\d{2})/$',
+    # specific meal. eg. kitchen/johnskitchen/2014-08-11/12:35
+    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<hour>\d{2})/(?P<minute>\d{2})/$',
         views.kitchen_detail,
         name='kitchen_detail'),
 
-    # eg. kitchen/johnskitchen/2014-08-11/12:35/confirm/guests/4
-    url(
-        r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<hour>\d{2})/(?P<minute>\d{2})/guests/(?P<number_of_guests>\d{1})/$',
+    # specific meal with number of guests. eg. kitchen/johnskitchen/2014-08-11/12:35
+    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<date>\d{4}-\d{2}-\d{2})/(?P<hour>\d{2})/(?P<minute>\d{2})/guests/(?P<number_of_guests>\d{1})/$',
         views.kitchen_detail,
         name='kitchen_detail'),
 
-    # eg. search/date/2014-09-17/
+    # eg. search/date/2014-09-17/guests/4
     url(r'^search/date/(?P<date>\d{4}-\d{2}-\d{2})/guests/(?P<number_of_guests>\d{1})/$',
-        views.search, name='search'),
+        views.search,
+        name='search'),
 
     # eg. book/
     url(r'^book/$', views.book, name='book'),

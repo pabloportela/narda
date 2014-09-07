@@ -17,7 +17,10 @@ def index(request):
     )
     return render_to_response('index.html', context_instance=context)
 
-
+'''
+TODO(pablo) search filters by GET does not scale. for now we are ok but we gotta
+do POST and validate when database is bigger and we really have to search & sort.
+'''
 def search(request, date, number_of_guests):
     arg_datetime = datetime.strptime(date, '%Y-%m-%d')
     one_day = timedelta(1)
@@ -68,7 +71,7 @@ jesus christ, I hope we have bookings at all.
 anyway, it is important to lock, because at the beggining there won't be
 many chefs and we will soon charge money upon booking.
 
-nlso, ow the book method has not just the booking but the post notifications.
+also, ow the book method has not just the booking but the post notifications.
 it all goes into the transaction, maybe we should change that
 '''
 
@@ -82,7 +85,7 @@ def book(request):
             meal = Meal.objects.select_for_update().get(id=meal_id)
             meal.book(request.user,number_of_guests)
     except ObjectDoesNotExist:
-        print("Non existent meal")
+        raise Exception("Non existent meal")
 
     context = RequestContext(request, {
         'request': request,

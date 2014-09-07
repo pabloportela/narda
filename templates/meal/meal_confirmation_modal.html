@@ -10,9 +10,8 @@
           </div>
 
           <div class="modal-body">
-            <span class="lead">
-                This meal will take place on {{meal.scheduled_for}} at {{meal.kitchen.name}} ({{meal.kitchen.address}})
-            </span>
+            <p id="p_confirmation_message">
+            </p>
             {% csrf_token %}
             <input type="hidden" name="meal_id" value="{{meal.id}}">
             <input type="hidden" name="number_of_guests" id="hidden_number_of_guests">
@@ -27,22 +26,5 @@
       </div>
     </div>
 
-    <script>
-{% if number_of_guests %}
-{# comes from facebook auth, number_of_guests comes from a GET variable #}
-
-    $(document).ready(function() {
-        $('#hidden_number_of_guests').val({{number_of_guests}});
-        $('#meal_confirmation_modal').modal();
-    });
-
-{% else %}
-{# was already authenticated, number_of_guests comes from the form on this page #}
-
-    $('#meal_confirmation_modal').on('shown.bs.modal', function() {
-        number_of_guests = $('#select_number_of_guests').val();
-        $('#hidden_number_of_guests').val(number_of_guests);
-    })
-
-{% endif %}
-    </script>
+<script>
+</script>
