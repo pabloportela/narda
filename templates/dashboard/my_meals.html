@@ -51,14 +51,44 @@
 
                         {#------- Items -------#}
                         <div class='meal_items' id="upcoming">
-                            {% for m in dine_meal_list_upcoming %}
-                                {% include "dashboard/my_meals_dine_item.html" %}
-                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Kitchen</th>
+                                                <th>Place</th>
+                                                <th>Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for m in dine_meal_list_upcoming %}
+                                                {% include "dashboard/my_meals_dine_item.html" %}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                         <div class='meal_items' id="done" style="display:none">
-                            {% for m in dine_meal_list_done %}
-                                {% include "dashboard/my_meals_dine_item.html" %}
-                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Kitchen</th>
+                                            <th>Place</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in dine_meal_list_done %}
+                                            {% include "dashboard/my_meals_dine_item.html" %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {#--------------------- TO COOK TAB ---------------------#}
@@ -85,24 +115,79 @@
 
                         {#------- Items -------#}
                         <div class='meal_items' id="upcoming">
-                            {% for m in cook_meal_list_upcoming %}
-                                {% include "dashboard/my_meals_cook_item.html" %}
-                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Guest</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in cook_meal_list_upcoming %}
+                                            {% include "dashboard/my_meals_cook_item.html" %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
                         <div class='meal_items' id="open" style="display:none">
-                            {% for m in cook_meal_list_open %}
-                                {% include "dashboard/my_meals_cook_item.html" %}
-                            {% endfor %}
+                                                        <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in cook_meal_list_open %}
+                                            {% include "dashboard/my_meals_cook_item.html" %}
+                                        {% endfor %}
+                                       </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
                         <div class='meal_items' id="cancelled" style="display:none">
-                            {% for m in cook_meal_list_cancelled %}
-                                {% include "dashboard/my_meals_cook_item.html" %}
-                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Guest</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in cook_meal_list_cancelled %}
+                                            {% include "dashboard/my_meals_cook_item.html" %}
+                                        {% endfor %}
+                                       </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
                         <div class='meal_items' id="done" style="display:none">
-                            {% for m in cook_meal_list_done %}
-                                {% include "dashboard/my_meals_cook_item.html" %}
-                            {% endfor %}
+                            <div class="row">
+                                <div class="col-md-8 col-md-offset-2">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Guest</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for m in cook_meal_list_done %}
+                                            {% include "dashboard/my_meals_cook_item.html" %}
+                                        {% endfor %}
+                                       </tbody>
+                                </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {#--------------------- ANOTHER TAB ---------------------#}
