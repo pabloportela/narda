@@ -25,6 +25,18 @@ class Kitchen(models.Model):
     available_seats = models.IntegerField()
 
 
+class KitchenReview(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(default=None, null=True, blank=True)
+    guest = models.ForeignKey(User, related_name='reviews')
+    kitchen = models.ForeignKey(Kitchen, related_name='reviews')
+    rating = models.IntegerField(null=True)
+    review = models.TextField(null=True)
+    token = models.CharField(
+        max_length=255, db_index=True
+    )
+
+
 class Meal(models.Model):
     scheduled_for = models.DateTimeField('scheduled for')
     kitchen = models.ForeignKey(Kitchen)
@@ -42,6 +54,7 @@ class Meal(models.Model):
     # how about "Avialable" and "Confirmed" respectively? that also goes with the datetime fields
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
+    review = models.ForeignKey(KitchenReview, null=True)
 
     def hour_formatted(self):
         return "%02d" % (self.scheduled_for.hour)
@@ -66,6 +79,7 @@ class Meal(models.Model):
         self.guest = user
         self.confirmed_at = timezone.now()
         self.status = 'a'
+        # end of the transaction
         self.save()
         meal_nr = self._generate_meal_number()
         # Guest confirmation
@@ -113,19 +127,6 @@ class Inquiry(models.Model):
     created_at = models.DateTimeField('date created')
     read_at = models.DateTimeField('receiver read it')
     committed = models.BooleanField()
-
-
-class KitchenReview(models.Model):
-    created_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField(default=None, null=True, blank=True)
-    guest = models.ForeignKey(User, related_name='reviews')
-    kitchen = models.ForeignKey(Kitchen, related_name='reviews')
-    meal = models.ForeignKey(Meal)
-    rating = models.IntegerField(null=True)
-    review = models.TextField(null=True)
-    token = models.CharField(
-        max_length=255, db_index=True
-    )
 
 
 class Invoice(models.Model):

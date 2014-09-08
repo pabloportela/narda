@@ -43,9 +43,9 @@ def search(request, date, number_of_guests):
 
 
 def kitchen_detail(request, date, hour, minute, kitchen_slug, number_of_guests=None):
-    meal = Meal.objects.select_related('kitchen').get(
+    meal = Meal.objects.prefetch_related('kitchen__reviews','kitchen__chef','kitchen__reviews__guest').get(
         kitchen__slug=kitchen_slug,
-        scheduled_for=date + " " + hour + ":" + minute
+        scheduled_for=date + " " + hour + ":" + minute,
     )
     if not meal:
         raise Http404()
@@ -70,9 +70,6 @@ jesus christ, I hope we have bookings at all.
 
 anyway, it is important to lock, because at the beggining there won't be
 many chefs and we will soon charge money upon booking.
-
-also, ow the book method has not just the booking but the post notifications.
-it all goes into the transaction, maybe we should change that
 '''
 
 @login_required
