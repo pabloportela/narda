@@ -1,9 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
-from autoslug import AutoSlugField
-from datetime import datetime
 from django.core import exceptions
+from django.utils import timezone
+
+from autoslug import AutoSlugField
+
 from notification.models import Notification
 
 
@@ -62,7 +64,7 @@ class Meal(models.Model):
         # booking core
         self.number_of_guests = number_of_guests
         self.guest = user
-        self.confirmed_at = datetime.now()
+        self.confirmed_at = timezone.now()
         self.status = 'a'
         self.save()
         meal_nr = self._generate_meal_number()
@@ -115,7 +117,7 @@ class Inquiry(models.Model):
 
 class KitchenReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    reviewed_at = models.DateTimeField(default=None, null=True)
+    reviewed_at = models.DateTimeField(default=None, null=True, blank=True)
     guest = models.ForeignKey(User, related_name='reviews')
     kitchen = models.ForeignKey(Kitchen, related_name='reviews')
     meal = models.ForeignKey(Meal)

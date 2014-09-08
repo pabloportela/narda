@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from django.core.management.base import BaseCommand
 from django.utils.crypto import get_random_string
+from django.utils import timezone
 
 from frontend.models import Meal, KitchenReview
 from notification.models import Notification
@@ -14,7 +13,7 @@ class Command(BaseCommand):
         """
 
     def handle(self, *args, **kwargs):
-        now = datetime.now()
+        now = timezone.now()
         meal_list = Meal.objects.filter(
             scheduled_for__lt=now,
             kitchenreview__isnull=True,

@@ -36,7 +36,7 @@ def search(request, date, number_of_guests):
         'request': request,
         'user': request.user,
         'meal_list': meal_list,
-        'date': date, 
+        'date': date,
         'number_of_guests': number_of_guests
     })
     return render_to_response('index.html', context_instance=context)
@@ -140,9 +140,11 @@ def my_meals(request):
 
 
 def post_guest_review(request, kitchen_slug, token):
+    import ipdb; ipdb.set_trace()
+    # TODO(Tayfun): Commented out reviewed_at criteria for testing.
     review_list = KitchenReview.objects.filter(
         token=token,
-        reviewed_at__isnull=True
+        # reviewed_at__isnull=True
     ).select_related(
         'kitchen',
         'meal'
