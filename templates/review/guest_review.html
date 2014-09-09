@@ -16,20 +16,19 @@
         {{ form.non_field_errors }}
         <div class="ratingWrapper form-group">
           {{ form.rating.errors }}
-          <label for="{{ form.rating.id_for_label }}">How do you rate it?</label>
-          {{ form.rating }}
+          <label for="{{ form.rating.id_for_label }}">How was your meal?</label>
         </div>
         <fieldset class="rating">
-          <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-          <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
-          <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-          <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
-          <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
+          <input type="radio" id="star5" name="{{ form.rating.name }}" value="5" {% if form.rating.value == "5" %} checked {% endif %} /><label for="star5" title="Rocks!">5 stars</label>
+          <input type="radio" id="star4" name="{{ form.rating.name }}" value="4" {% if form.rating.value == "4" %} checked {% endif %}/><label for="star4" title="Pretty good">4 stars</label>
+          <input type="radio" id="star3" name="{{ form.rating.name }}" value="3" {% if form.rating.value == "3" %} checked {% endif %}/><label for="star3" title="Meh">3 stars</label>
+          <input type="radio" id="star2" name="{{ form.rating.name }}" value="2" {% if form.rating.value == "2" %} checked {% endif %}/><label for="star2" title="Kinda bad">2 stars</label>
+          <input type="radio" id="star1" name="{{ form.rating.name }}" value="1" {% if form.rating.value == "1" %} checked {% endif %}/><label for="star1" title="Sucks big time">1 star</label>
         </div>
         <div class="reviewWrapper form-group">
           {{ form.review.errors }}
-          <label for="{{ form.review.id_for_label }}">How was your meal?</label>
-          <textarea id="{{ form.review.id_for_label }}" name="{{ form.review.name }}" class="form-control" rows="3"></textarea>
+          <label for="{{ form.review.id_for_label }}">Any more feedback?</label>
+          <textarea id="{{ form.review.id_for_label }}" name="{{ form.review.name }}" class="form-control-disabled" rows="3">{{ form.review.value}}</textarea>
         </div>
         <div class="submit-button">
           <input type="submit" name="submit" id="" value="Submit" />
@@ -39,8 +38,10 @@
   </div>
   <style>
 
+/* Rating stuff taken from http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/ */
 .rating {
     float:left;
+    font-family: FontAwesome;
 }
 
 /* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
@@ -62,22 +63,20 @@
     font-size:200%;
     line-height:1.2;
     color:#ddd;
-    text-shadow:1px 1px #bbb, 2px 2px #666, .1em .1em .2em rgba(0,0,0,.5);
 }
 
 .rating:not(:checked) > label:before {
-    content: '★ ';
+  content: "\f005";
 }
 
 .rating > input:checked ~ label {
-    color: #f70;
-    text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);
+  content: "\f006";
+  color: gold;
 }
 
 .rating:not(:checked) > label:hover,
 .rating:not(:checked) > label:hover ~ label {
     color: gold;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
 }
 
 .rating > input:checked + label:hover,
@@ -86,7 +85,6 @@
 .rating > input:checked ~ label:hover ~ label,
 .rating > label:hover ~ input:checked ~ label {
     color: #ea0;
-    text-shadow:1px 1px goldenrod, 2px 2px #B57340, .1em .1em .2em rgba(0,0,0,.5);
 }
 
 .rating > label:active {
@@ -95,10 +93,4 @@
     left:2px;
 }
   </style>
-  <script>
-  $(".star").on("click", function() {
-      $(this).attr("selected", true);
-      
-  });
-  </script>
 {% endblock %}

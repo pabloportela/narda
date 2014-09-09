@@ -16,7 +16,7 @@ class Command(BaseCommand):
         now = timezone.now()
         meal_list = Meal.objects.filter(
             scheduled_for__lt=now,
-            kitchenreview__isnull=True,
+            review__isnull=True,
             status='a',
         )
         for meal in meal_list:
@@ -27,8 +27,9 @@ class Command(BaseCommand):
                 token=token,
                 guest=meal.guest,
                 kitchen=meal.kitchen,
-                meal=meal,
             )
+            meal.review = kitchen_review
+            meal.save()
             Notification.notify(
                 'invite_guest_review', {
                     'to_address': meal.guest.email,

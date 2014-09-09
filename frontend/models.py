@@ -50,7 +50,7 @@ class Meal(models.Model):
     # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
-    review = models.ForeignKey(KitchenReview, null=True)
+    review = models.OneToOneField(KitchenReview, null=True)
 
     def meal_datetime(self):
         # We need to transform to naive datetime to show to users.
