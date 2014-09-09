@@ -42,16 +42,12 @@ class Meal(models.Model):
     kitchen = models.ForeignKey(Kitchen)
     guest = models.ForeignKey(
         User, related_name='guest', blank=True, null=True)
-    is_available = models.IntegerField(default=1)
-
+    number = models.CharField(max_length=6, db_index=True)
     created_at = models.DateTimeField('date created', auto_now=True)
-    confirmed_at = models.DateTimeField(blank=True, null=True)
+    accepted_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
-    # Open, Accepted, Done, Noshow, Canceled
+    # Open, Accepted, Done, Noshow, Canceled, Expired
     # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
-    # TODO(pablo) isn't "Open" a suitable state for a kitchen rather than a meal?
-    # maybe we could use Available here, but already collides with Accepted.
-    # how about "Avialable" and "Confirmed" respectively? that also goes with the datetime fields
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
     review = models.ForeignKey(KitchenReview, null=True)
@@ -74,7 +70,6 @@ class Meal(models.Model):
     def description(self):
         return 'This is the meal description'
 
-# TODO(pablo) we probably need out custom exception class, but this is ok for now
     def book(self, user, number_of_guests):
         # validation
         if self.status != 'o':
@@ -86,42 +81,25 @@ class Meal(models.Model):
         # booking core
         self.number_of_guests = number_of_guests
         self.guest = user
-        self.confirmed_at = timezone.now()
+        self.accepted_at = timezone.now()
         self.status = 'a'
+        self.number = self._generate_meal_number()
         # end of the transaction
         self.save()
-        meal_nr = self._generate_meal_number()
+
         # Guest confirmation
         Notification.notify('book_guest', {
             'to_address': self.guest.email,
             'meal': self,
-            'meal_nr': meal_nr,
         })
         # Chef confirmation
         Notification.notify('book_chef', {
             'to_address': self.kitchen.chef.email,
             'meal': self,
-            'meal_nr': meal_nr,
         })
 
     def _generate_meal_number(self):
-        length = 9
-        for len_try in range(3):
-            for rand_try in range (30):
-                meal_nr = get_random_string(length=length, allowed_chars='123456789')
-                obj, created = MealId_MealNr.objects.get_or_create(meal_nr = meal_nr, meal = self)
-                if created:
-                    return meal_nr
-            length = length + 1
-        raise Exception('Gave up trying to generate unique meal_nr')
-
-# TODO(tayfun): Photos need to be added to kitchen as a gallery.
-# Convention is to have static/pictures/kitchen/id as a directory where
-# kitchen photos would be put manually and referenced by menu textfield.
-
-class MealId_MealNr(models.Model):
-    meal_nr = models.IntegerField(primary_key=True)
-    meal = models.ForeignKey(Meal, db_index=True)
+        return get_random_string(length=6, allowed_chars='1234567890')
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
