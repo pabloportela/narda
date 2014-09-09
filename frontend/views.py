@@ -1,8 +1,10 @@
+from datetime import datetime, timedelta
+
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from datetime import datetime, timedelta
+from django.utils import timezone
 from django.db import IntegrityError, DatabaseError, transaction
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -22,7 +24,10 @@ TODO(pablo) search filters by GET does not scale. for now we are ok but we gotta
 do POST and validate when database is bigger and we really have to search & sort.
 '''
 def search(request, date, number_of_guests):
-    arg_datetime = datetime.strptime(date, '%Y-%m-%d')
+    arg_datetime = timezone.make_aware(
+        datetime.strptime(date, '%Y-%m-%d'),
+        timezone.get_current_timezone(),
+    )
     one_day = timedelta(1)
     meal_list = Meal.objects.filter(
         scheduled_for__lt=(arg_datetime + one_day),
@@ -42,10 +47,16 @@ def search(request, date, number_of_guests):
     return render_to_response('index.html', context_instance=context)
 
 
-def kitchen_detail(request, date, hour, minute, kitchen_slug, number_of_guests=None):
+def kitchen_detail(request, meal_datetime, kitchen_slug,
+                   number_of_guests=None):
+    meal_datetime = datetime.strptime(meal_datetime, '%Y-%m-%d/%H/%M')
+    meal_datetime = timezone.make_aware(
+        meal_datetime,
+        timezone.get_current_timezone(),
+    )
     meal = Meal.objects.prefetch_related('kitchen__reviews','kitchen__chef','kitchen__reviews__guest').get(
         kitchen__slug=kitchen_slug,
-        scheduled_for=date + " " + hour + ":" + minute,
+        scheduled_for=meal_datetime,
     )
     if not meal:
         raise Http404()
@@ -137,7 +148,6 @@ def my_meals(request):
 
 
 def post_guest_review(request, kitchen_slug, token):
-    import ipdb; ipdb.set_trace()
     # TODO(Tayfun): Commented out reviewed_at criteria for testing.
     review_list = KitchenReview.objects.filter(
         token=token,

@@ -56,6 +56,15 @@ class Meal(models.Model):
     number_of_guests = models.IntegerField()
     review = models.ForeignKey(KitchenReview, null=True)
 
+    def meal_datetime(self):
+        # We need to transform to naive datetime to show to users.
+        scheduled_for = timezone.make_naive(
+            self.scheduled_for,
+            timezone.get_default_timezone()
+        )
+        return str(scheduled_for.date()) + "/%02d/%02d" % (
+            scheduled_for.hour, scheduled_for.minute)
+
     def hour_formatted(self):
         return "%02d" % (self.scheduled_for.hour)
 
