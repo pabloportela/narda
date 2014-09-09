@@ -1,7 +1,7 @@
 {% load staticfiles %}
     <tr>
         <td>
-            <a href="{% url "kitchen_detail" date=m.scheduled_for.date hour=m.hour_formatted minute=m.minute_formatted kitchen_slug=m.kitchen.slug %}">
+            <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug %}">
                 <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
             </a>
         </td>
