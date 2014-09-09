@@ -118,6 +118,12 @@ p {
 .narda-blue {
     color: #3276b1;
 }
+.narda-green {
+    color: #00cc00;
+}
+.narda-red {
+    color: #cc0000;
+}
 
 .narda-footer:hover {
     color: #eee;

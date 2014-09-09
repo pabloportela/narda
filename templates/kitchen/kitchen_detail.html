@@ -19,7 +19,9 @@
   </div>
   <div class="row">
     <div class="col-md-12">
+{% if meal.status = 'o' %}
 {% include "meal/meal_confirmation_modal.html" %}
+{% endif %}
     </div>
   </div>
 
