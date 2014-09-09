@@ -2,17 +2,14 @@
     <tr>
         <td>
             <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug %}">
-                <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
+                {{m.kitchen.name}}
             </a>
         </td>
         <td>
-            <span class="glyphicon glyphicon-map-marker narda-blue"></span> {{m.kitchen.address}}
+        {{m.kitchen.address}}
         </td>
         <td>
-            <div>
-                <span class="glyphicon glyphicon-calendar narda-blue"></span>{{ m.scheduled_for|date:"d N" }} - {{ m.scheduled_for|date:"l" }}
-            </div>
-            <span class="glyphicon glyphicon-time narda-blue"></span>{{m.scheduled_for.time}}
+        {{ m.scheduled_for|date:"d N" }} - {{ m.scheduled_for|date:"l" }} {{m.scheduled_for.time}}
         </td>
     </tr>
 

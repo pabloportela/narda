@@ -19,22 +19,26 @@
             });
           });
         </script>
-        <ul class="nav nav-tabs" role="tablist" id="userTab">
-          <li class="active"><a href="#tab_dine" role="tab" data-toggle="tab">To Dine</a></li>
-          <li><a href="#tab_cook" role="tab" data-toggle="tab">To Cook</a></li>
-        </ul>
 
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-            <br/>
-            <br/>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                <br/>
+                <ul class="nav nav-tabs" role="tablist" id="userTab">
+                  <li class="active"><a href="#tab_dine" role="tab" data-toggle="tab">To Dine</a></li>
+                  <li><a href="#tab_cook" role="tab" data-toggle="tab">To Cook</a></li>
+                </ul>
+                <br/>
+              </div>
+            </div>
                 <div class="tab-content">
                     {#--------------------- TO DINE TAB ---------------------#}
                     <div class="tab-pane active dine" id="tab_dine">
                         {#------- Selector -------#}
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
-                                <h4 style='display:inline-block'> Show: </h4>
+                                <h5 style='display:inline-block'> Filter by: </h5>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                         <span id="meal_selector_label">Upcoming Meals</span>
@@ -96,7 +100,7 @@
                         {#------- Selector -------#}
                         <div class="row">
                             <div class="col-md-8 col-md-offset-2">
-                                <h4 style='display:inline-block'> Show: </h4>
+                                <h5 style='display:inline-block'> Filter by: </h5>
                                 <div class="btn-group">
                                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                     <span id="meal_selector_label">Upcoming Meals</span>
