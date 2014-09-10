@@ -1,7 +1,7 @@
 {% load staticfiles %}
       <br />
       <center>
-      <div id="slider">
+      <div id="slider" class="ideal-image-slider iis-effect-slide">
         {% for i in image_number %}
           {% if i = 1 %}
           <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/640x480/0{{i}}.png" data-src="" width="640" height="480"/>
