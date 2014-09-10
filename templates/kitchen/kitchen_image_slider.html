@@ -1,29 +1,22 @@
 {% load staticfiles %}
       <br />
       <center>
-      <ul id="imageGallery" class="gallery list-unstyled lightSlider csSlide">
+      <div id="slider">
         {% for i in image_number %}
-        <li data-thumb="/static/pictures/kitchens/{{meal.kitchen.id}}/120x120/0{{i}}.png" style="width=auto;">
-          <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/640x480/0{{i}}.png" width="600" height="500"/>
-        </li>
+          {% if i = 1 %}
+          <img src="/static/pictures/kitchens/{{meal.kitchen.id}}/640x480/0{{i}}.png" data-src="" width="640" height="480"/>
+          {% else %}
+          <img data-src="/static/pictures/kitchens/{{meal.kitchen.id}}/640x480/0{{i}}.png" src="" width="640" height="480"/>
+          {% endif %}
         {% endfor %}
-      </ul>
+      </div>
       </center>
-      <link type="text/css" rel="stylesheet" href="{% static "lightSlider/css/lightSlider.css" %}" />
-      <script src="{% static "lightSlider/js/jquery.lightSlider.js" %}"></script>
-      <script>
-      $(document).ready(function() {
-          $('#imageGallery').lightSlider({
-              gallery:true,
-              minSlide:1,
-              maxSlide:1,
-              currentPagerPosition:'left',
-              controls: false,
-              currentPagerPosition: 'middle',
-              slideMargin: 0,
-              slideWidth: 640,
-              thumbWidth: 97,
-              thumbMargin: 3,
-          });
-      });
-      </script>
+
+<script>
+var slider = new IdealImageSlider.Slider({
+  selector: '#slider',
+  height: 480,
+  interval: 4000,
+});
+slider.start();
+</script>

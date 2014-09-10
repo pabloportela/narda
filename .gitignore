@@ -54,8 +54,12 @@ docs/_build/
 
 # swap files
 *.swp
+.DS_Store
 
 # critical settings file
 narda/settings.py
+
+# data
 static/pictures
+
 
