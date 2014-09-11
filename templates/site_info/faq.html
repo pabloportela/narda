@@ -3,9 +3,72 @@
 {% block title %}FAQ - Narda{% endblock %}
 
 {% block content %}
-    <h3 class="narda-orange">FAQ</h3>
-    <br/>
-    <p>
-We gotta come up with the FAQ
-    </p>
+<div class="row">
+<div class="col-md-8 col-md-offset-2">
+<h3 class="narda-orange">FAQ</h3>
+<br/>
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+      <h4 class="panel-title">
+          Who are the chefs?
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse">
+      <div class="panel-body">
+Chefs are locals that love to cook, have spare seats and can offer you a meal.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+      <h4 class="panel-title">
+Is it safe to enter their houses?
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body">
+Chefs at Narda are carefully selected from people we know and trust. We are expanding out network by referrals of these people, and all the kitchens are checked in person by our team before they become a part of our database. So yes, using Narda is very safe.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+      <h4 class="panel-title">
+Do you charge for your service?
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body">
+We charge a small reservation fee for the service. But that is deducted from the price you pay in the kitchen. So what you see from the kitchen's menu is the final proice you pay. No surprises.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+      <h4 class="panel-title">
+How do I pay?
+      </h4>
+    </div>
+    <div id="collapseFour" class="panel-collapse collapse">
+      <div class="panel-body">
+You pay by credit card, information is collected by Stripe.
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+      <h4 class="panel-title">
+I have a voucher, how can I redeem it?
+      </h4>
+    </div>
+    <div id="collapseFive" class="panel-collapse collapse">
+      <div class="panel-body">
+When selecting the payment method, click on the voucher option, enter your code, and press the "Book Meal" button.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
 {% endblock %}
