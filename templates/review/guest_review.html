@@ -4,47 +4,63 @@
 
 {% block content %}
   <div class="row">
-    <div class="col-md-6">
-      {% include "kitchen/kitchen_description.html" %}
-    </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-md-offset-3">
       <h2 class="narda-orange">
-        Review Your Meal
+        {% if form %}
+          Review Your Meal at {{meal.kitchen.name}}
+        {% else %}
+          Here's Your Review
+        {% endif %}
       </h2>
-      <form method="post" accept-charset="utf-8" role="form" class="form-horizontal">
+      <p>
+      Our records show you had meal on {{meal.scheduled_for}} <br>
+      {% if form %}
+        How did it go? Let us know!
+      {% else %}
+        You added your review at {{ review.reviewed_at }}
+      {% endif %}
+      </p>
+      {% if form %}
+      <form method="post" accept-charset="utf-8" role="form" class="">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <div class="ratingWrapper form-group">
-          {{ form.rating.errors }}
-          <label for="{{ form.rating.id_for_label }}">How was your meal?</label>
+        {{ form.rating.errors }}
+        <div class="form-group">
+          <label for="{{ form.rating.id_for_label }}" style="display: block">How was your meal?</label>
+          <fieldset class="rating" style="display: inline">
+            <input type="radio" id="star5" name="{{ form.rating.name }}" value="5" {% if form.rating.value == "5" %} checked {% endif %} /><label for="star5" title="Rocks!">5 stars</label>
+            <input type="radio" id="star4" name="{{ form.rating.name }}" value="4" {% if form.rating.value == "4" %} checked {% endif %}/><label for="star4" title="Pretty good">4 stars</label>
+            <input type="radio" id="star3" name="{{ form.rating.name }}" value="3" {% if form.rating.value == "3" %} checked {% endif %}/><label for="star3" title="Meh">3 stars</label>
+            <input type="radio" id="star2" name="{{ form.rating.name }}" value="2" {% if form.rating.value == "2" %} checked {% endif %}/><label for="star2" title="Kinda bad">2 stars</label>
+            <input type="radio" id="star1" name="{{ form.rating.name }}" value="1" {% if form.rating.value == "1" %} checked {% endif %}/><label for="star1" title="Not worth it">1 star</label>
+          </fieldset>
         </div>
-        <fieldset class="rating">
-          <input type="radio" id="star5" name="{{ form.rating.name }}" value="5" {% if form.rating.value == "5" %} checked {% endif %} /><label for="star5" title="Rocks!">5 stars</label>
-          <input type="radio" id="star4" name="{{ form.rating.name }}" value="4" {% if form.rating.value == "4" %} checked {% endif %}/><label for="star4" title="Pretty good">4 stars</label>
-          <input type="radio" id="star3" name="{{ form.rating.name }}" value="3" {% if form.rating.value == "3" %} checked {% endif %}/><label for="star3" title="Meh">3 stars</label>
-          <input type="radio" id="star2" name="{{ form.rating.name }}" value="2" {% if form.rating.value == "2" %} checked {% endif %}/><label for="star2" title="Kinda bad">2 stars</label>
-          <input type="radio" id="star1" name="{{ form.rating.name }}" value="1" {% if form.rating.value == "1" %} checked {% endif %}/><label for="star1" title="Sucks big time">1 star</label>
-        </div>
-        <div class="reviewWrapper form-group">
+        <div class="form-group">
           {{ form.review.errors }}
-          <label for="{{ form.review.id_for_label }}">Any more feedback?</label>
-          <textarea id="{{ form.review.id_for_label }}" name="{{ form.review.name }}" class="form-control-disabled" rows="3">{{ form.review.value}}</textarea>
+          <label for="{{ form.review.id_for_label }}" style="display: block">Anything to add?</label>
+          <textarea id="{{ form.review.id_for_label }}" name="{{ form.review.name }}" class="form-control-disabled" rows="3" style="width: 100%;">{% if form.review.value %}{{ form.review.value }}{% endif %}</textarea>
         </div>
         <div class="submit-button">
-          <input type="submit" name="submit" id="" value="Submit" />
+          <button type="submit" class="btn btn-primary form-element-narda" name="submit" id="" value="Submit">Submit</button>
         </div>
       </form>
+      {% else %}
+        {% include "review/single_review.html" with review=review %}
+      {% endif %}
     </div>
   </div>
   <style>
 
+form {
+  font-size: 1.25em;
+}
+
 /* Rating stuff taken from http://lea.verou.me/2011/08/accessible-star-rating-widget-with-pure-css/ */
 .rating {
-    float:left;
     font-family: FontAwesome;
 }
 
-/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t 
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
    follow these rules. Every browser that supports :checked also supports :not(), so
    it doesn’t make the test unnecessarily selective */
 .rating:not(:checked) > input {
@@ -63,6 +79,7 @@
     font-size:200%;
     line-height:1.2;
     color:#ddd;
+    margin: 0 0.1em;
 }
 
 .rating:not(:checked) > label:before {

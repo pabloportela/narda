@@ -4,11 +4,7 @@
 
   {% for review in meal.kitchen.reviews.all %}
     {% if review.reviewed_at %}
-<blockquote>
-  <p>{{review.review}}</p>
-  <footer>Reviewed on {{review.reviewed_at}}, by {{review.guest.first_name}} ({{review.guest.username}})</footer>
-</blockquote>
-<br/>
+      {% include "review/single_review.html" with review=review %}
     {% endif %}
   {% endfor %}
 

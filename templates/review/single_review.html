@@ -1,0 +1,49 @@
+<blockquote>
+  <fieldset class="rating-readonly" style="display: inline">
+    <input type="radio" id="star5" name="rating" value="5" {% if review.rating == 5 %} checked {% endif %} disabled /><label for="star5" title="Rocks!">5 stars</label>
+    <input type="radio" id="star4" name="rating" value="4" {% if review.rating == 4 %} checked {% endif %} disabled/><label for="star4" title="Pretty good">4 stars</label>
+    <input type="radio" id="star3" name="rating" value="3" {% if review.rating == 3 %} checked {% endif %} disabled/><label for="star3" title="Meh">3 stars</label>
+    <input type="radio" id="star2" name="rating" value="2" {% if review.rating == 2 %} checked {% endif %} disabled/><label for="star2" title="Kinda bad">2 stars</label>
+    <input type="radio" id="star1" name="rating" value="1" {% if review.rating == 1 %} checked {% endif %} disabled/><label for="star1" title="Not worth it">1 star</label>
+  </fieldset>
+  <p>{{review.review}}</p>
+  <footer>Reviewed on {{review.reviewed_at}}, by {{review.guest.first_name}} ({{review.guest.username}})</footer>
+</blockquote>
+<br/>
+<style>
+
+.rating-readonly {
+    font-family: FontAwesome;
+    font-size: 0.75em;
+}
+
+/* :not(:checked) is a filter, so that browsers that don’t support :checked don’t
+   follow these rules. Every browser that supports :checked also supports :not(), so
+   it doesn’t make the test unnecessarily selective */
+.rating-readonly:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+    clip:rect(0,0,0,0);
+}
+
+.rating-readonly:not(:checked) > label {
+    float:right;
+    width:1em;
+    padding:0 .1em;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:200%;
+    line-height:1.2;
+    color:#ddd;
+    margin: 0 0.1em;
+}
+
+.rating-readonly:not(:checked) > label:before {
+  content: "\f005";
+}
+
+.rating-readonly > input:checked ~ label {
+  content: "\f006";
+  color: gold;
+}
+</style>

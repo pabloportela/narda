@@ -160,13 +160,16 @@ def post_guest_review(request, kitchen_slug, token):
         raise Http404()
     review = review_list[0]
 
-    if request.method == 'GET':
-        form = KitchenReviewForm()
+    if not review.reviewed_at:
+        if request.method == 'GET':
+            form = KitchenReviewForm()
+        else:
+            form = KitchenReviewForm(
+                request.POST, instance=review)
+            if form.is_valid():
+                form.save()
     else:
-        form = KitchenReviewForm(
-            request.POST, instance=review)
-        if form.is_valid():
-            form.save()
+        form = None
 
     context = RequestContext(request, {
         'review': review,
