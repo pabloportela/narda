@@ -15,13 +15,40 @@
             {% csrf_token %}
             <input type="hidden" name="meal_id" value="{{meal.id}}">
             <input type="hidden" name="number_of_guests" id="hidden_number_of_guests">
+            <input type="hidden" name="stripe_token" id="stripe_token">
           </div>
 
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary form-element-narda">Confirm Booking</button>
+            <button class="btn btn-primary form-element-narda" id="pay_button">Confirm Booking</button>
           </div>
-
         </div>
         </form>
       </div>
     </div>
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+$(document).ready(function() {
+  var handler = StripeCheckout.configure({
+    key: '{{ stripe_key }}',
+    token: function(token) {
+      console.log('Your payment have been made.');
+      console.log(token);
+      $('#stripe_token').val(token.id);
+      $('#meal_form').submit();
+    }
+  });
+
+  document.getElementById('pay_button').addEventListener('click', function(e) {
+    // Open Checkout with further options
+    handler.open({
+      name: 'Narda',
+      description: 'Meal reservation',
+      amount: 300,
+      email: '{{user.email}}',
+      allowRememberMe: false
+    });
+    e.preventDefault();
+  });
+});
+</script>

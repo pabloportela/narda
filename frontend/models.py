@@ -3,8 +3,8 @@ from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.core import exceptions
 from django.utils import timezone
-
 from autoslug import AutoSlugField
+import stripe
 
 from notification.models import Notification
 
@@ -70,7 +70,7 @@ class Meal(models.Model):
     def description(self):
         return 'This is the meal description'
 
-    def book(self, user, number_of_guests):
+    def book(self, user, number_of_guests,stripe_token):
         # validation
         if self.status != 'o':
             raise Exception('The meal is not available anymore')
@@ -84,6 +84,10 @@ class Meal(models.Model):
         self.accepted_at = timezone.now()
         self.status = 'a'
         self.number = self._generate_meal_number()
+
+        # charge via stripe token
+        self.charge(stripe_token)
+
         # end of the transaction
         self.save()
 
@@ -100,6 +104,28 @@ class Meal(models.Model):
 
     def _generate_meal_number(self):
         return get_random_string(length=6, allowed_chars='1234567890')
+
+
+    # TODO(pablo) charge should invoke a generic method of payment interface and not bound Stripe to our code.
+    def charge(self,token):
+        #TODO(pablo) get get_env_setting to work, god damn it.
+        #stripe.api_key = STRIPE_SECRET
+        stripe.api_key = 'sk_test_QbR6cxiNlWfnnGam0IP1MQa9'
+
+        # Create the charge on Stripe's servers - this will charge the user's card
+        try:
+            charge = stripe.Charge.create(
+            # TODO(pablo) here we got hardcoded business rules, such as price. refactor.
+            amount=300, # amount in cents, again
+            currency="eur",
+            card=token,
+            description="Meal id "+str(self.id)
+        )
+        except stripe.CardError, e:
+            # The card has been declined
+            raise Exception("There was an error with your payment");
+            pass
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')

@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-
 from django.shortcuts import render_to_response, get_object_or_404
 from django.http import Http404
 from django.template import RequestContext
@@ -67,7 +66,10 @@ def kitchen_detail(request, meal_datetime, kitchen_slug,
         'meal': meal,
         'available_seats': range(1, meal.kitchen.available_seats + 1),
         'image_number': range(1, 6),
-        'number_of_guests': number_of_guests
+        'number_of_guests': number_of_guests,
+        'stripe_key': 'pk_test_7GUP8kV347OwMUuJ4Fj6H30r',
+        #TODO(pablo) get this to work
+        #'stripe_key': STRIPE_KEY
     })
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
@@ -87,11 +89,12 @@ many chefs and we will soon charge money upon booking.
 def book(request):
     meal_id = request.POST.get('meal_id')
     number_of_guests = request.POST.get('number_of_guests')
+    stripe_token = request.POST.get('stripe_token')
 
     try:
         with transaction.atomic():
             meal = Meal.objects.select_for_update().get(id=meal_id)
-            meal.book(request.user,number_of_guests)
+            meal.book(request.user,number_of_guests,stripe_token)
     except ObjectDoesNotExist:
         raise Exception("Non existent meal")
 
