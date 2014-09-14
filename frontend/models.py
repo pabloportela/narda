@@ -37,6 +37,7 @@ class KitchenReview(models.Model):
     )
 
 
+
 class Meal(models.Model):
     scheduled_for = models.DateTimeField('scheduled for')
     kitchen = models.ForeignKey(Kitchen)
@@ -105,6 +106,10 @@ class Meal(models.Model):
     def _generate_meal_number(self):
         return get_random_string(length=6, allowed_chars='1234567890')
 
+    def _generate_transaction(self):
+        #TODO(pablo) generate a db transaction
+        pass
+
 
     # TODO(pablo) charge should invoke a generic method of payment interface and not bound Stripe to our code.
     def charge(self,token):
@@ -115,17 +120,29 @@ class Meal(models.Model):
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
             charge = stripe.Charge.create(
-            # TODO(pablo) here we got hardcoded business rules, such as price. refactor.
-            amount=300, # amount in cents, again
-            currency="eur",
-            card=token,
-            description="Meal id "+str(self.id)
-        )
+                # TODO(pablo) here we got hardcoded business rules, such as price. refactor.
+                amount=300, # amount in cents, likewise
+                currency="eur",
+                card=token,
+                description="Meal id "+str(self.id)
+            )
+            self._generate_transaction(charge)
         except stripe.CardError, e:
             # The card has been declined
             raise Exception("There was an error with your payment");
             pass
 
+
+#TODO(pablo) subclass this thing with StripeTransaction to abstract ourselves from that MOP
+class Transaction(models.Model):
+    meal = models.ForeignKey(Meal)
+    created_at = models.DateTimeField('date created')
+    amount = models.IntegerField('in cents')
+    # Pending, Accepted, Failed
+    status = models.CharField(max_length=1, default='p')
+    # Stripe
+    gateway = models.CharField(max_length=1, default='s')
+    
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
