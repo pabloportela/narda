@@ -4,6 +4,7 @@ from django.utils.crypto import get_random_string
 from django.core import exceptions
 from django.utils import timezone
 from autoslug import AutoSlugField
+from django.conf import settings
 import stripe
 
 from notification.models import Notification
@@ -114,8 +115,7 @@ class Meal(models.Model):
     # TODO(pablo) charge should invoke a generic method of payment interface and not bound Stripe to our code.
     def charge(self,token):
         #TODO(pablo) get get_env_setting to work, god damn it.
-        #stripe.api_key = STRIPE_SECRET
-        stripe.api_key = 'sk_test_QbR6cxiNlWfnnGam0IP1MQa9'
+        stripe.api_key = settings.STRIPE_SECRET
 
         # Create the charge on Stripe's servers - this will charge the user's card
         try:
@@ -126,11 +126,10 @@ class Meal(models.Model):
                 card=token,
                 description="Meal id "+str(self.id)
             )
-            self._generate_transaction(charge)
+            #self._generate_transaction(charge)
         except stripe.CardError, e:
             # The card has been declined
             raise Exception("There was an error with your payment");
-            pass
 
 
 #TODO(pablo) subclass this thing with StripeTransaction to abstract ourselves from that MOP

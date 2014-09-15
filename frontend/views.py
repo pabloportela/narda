@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db import IntegrityError, DatabaseError, transaction
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 
 from frontend.models import Meal, KitchenReview
 from frontend.forms import KitchenReviewForm
@@ -67,9 +68,7 @@ def kitchen_detail(request, meal_datetime, kitchen_slug,
         'available_seats': range(1, meal.kitchen.available_seats + 1),
         'image_number': range(1, 6),
         'number_of_guests': number_of_guests,
-        'stripe_key': 'pk_test_7GUP8kV347OwMUuJ4Fj6H30r',
-        #TODO(pablo) get this to work
-        #'stripe_key': STRIPE_KEY
+        'stripe_key': settings.STRIPE_KEY
     })
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
