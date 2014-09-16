@@ -81,7 +81,7 @@ message and hopefully we won't have overbookings.
 jesus christ, I hope we have bookings at all.
 
 anyway, it is important to lock, because at the beggining there won't be
-many chefs and we will soon charge money upon booking.
+many chefs and we will charge money upon booking.
 '''
 
 @login_required
