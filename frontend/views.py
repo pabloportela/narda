@@ -90,12 +90,7 @@ def book(request):
     number_of_guests = request.POST.get('number_of_guests')
     stripe_token = request.POST.get('stripe_token')
 
-    try:
-        with transaction.atomic():
-            meal = Meal.objects.select_for_update().get(id=meal_id)
-            meal.book(request.user,number_of_guests,stripe_token)
-    except ObjectDoesNotExist:
-        raise Exception("Non existent meal")
+    meal = Meal.book(meal_id,request.user,number_of_guests,stripe_token)
 
     context = RequestContext(request, {
         'request': request,

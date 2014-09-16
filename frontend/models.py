@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import IntegrityError, DatabaseError, transaction, models
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.core import exceptions
@@ -6,6 +6,7 @@ from django.utils import timezone
 from autoslug import AutoSlugField
 from django.conf import settings
 import stripe
+import json
 
 from notification.models import Notification
 
@@ -48,7 +49,7 @@ class Meal(models.Model):
     created_at = models.DateTimeField('date created', auto_now=True)
     accepted_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
-    # Open, Accepted, Done, Noshow, Canceled, Expired
+    # Open, Payment pending, Accepted, Done, Noshow, Canceled, Expired
     # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField()
@@ -72,27 +73,59 @@ class Meal(models.Model):
     def description(self):
         return 'This is the meal description'
 
-    def book(self, user, number_of_guests,stripe_token):
-        # validation
-        if self.status != 'o':
-            raise Exception('The meal is not available anymore')
+    @staticmethod
+    def _get_meal_to_book(meal_id,number_of_guests):
+        with transaction.atomic():
+            # get the meal with row lock
+            try:
+                meal = Meal.objects.select_for_update().get(id=meal_id)
+            except ObjectDoesNotExist:
+                raise Exception("Meal does not exist")
 
-        if int(number_of_guests) > int(self.kitchen.available_seats):
-            raise Exception('The available kitchen seats are not enough for your meal request')
+            # validation
+            if meal.status != 'o': # not 'o'open to book
+                raise Exception('The meal is not available anymore')
 
+            if int(number_of_guests) > int(meal.kitchen.available_seats):
+                raise Exception('The available kitchen seats are not enough for your meal request')
+
+            # put a hold on the meal till we charge
+            meal.status = 'p' # 'p'ending payment
+            # end of the transaction
+            meal.save()
+
+            return meal
+
+    def _do_book(self,number_of_guests,user):
         # booking core
+        self.status = 'a' # 'a'ccepted
         self.number_of_guests = number_of_guests
         self.guest = user
         self.accepted_at = timezone.now()
-        self.status = 'a'
-        self.number = self._generate_meal_number()
-
-        # charge via stripe token
-        self.charge(stripe_token)
-
-        # end of the transaction
+        self.number = self.generate_meal_number()
         self.save()
 
+    @staticmethod
+    def book(meal_id,user,number_of_guests,stripe_token):
+        # lock the meal so nobody gets in the way
+        meal = Meal._get_meal_to_book(meal_id,number_of_guests)
+        # charge via stripe token
+        try:
+            meal.stripe_charge(stripe_token)
+        except Exception as e:
+            # payment failed, we leave the meal as it was (an update is atomic)
+            meal.status = 'o' # 'o'pen to book
+            meal.save()
+            raise e
+        # do the actual booking
+        meal._do_book(number_of_guests,user)
+        # set up notifications (mail for now)
+        meal.notify()
+
+        return meal
+
+
+    def notify(self):
         # Guest confirmation
         Notification.notify('book_guest', {
             'to_address': self.guest.email,
@@ -104,58 +137,82 @@ class Meal(models.Model):
             'meal': self,
         })
 
-    def _generate_meal_number(self):
+    def generate_meal_number(self):
         return get_random_string(length=6, allowed_chars='1234567890')
 
-    def _generate_transaction(self):
-        #TODO(pablo) generate a db transaction
-        pass
-
-
-    # TODO(pablo) charge should invoke a generic method of payment interface and not bound Stripe to our code.
-    def charge(self,token):
-        #TODO(pablo) get get_env_setting to work, god damn it.
-        stripe.api_key = settings.STRIPE_SECRET
-
-        # Create the charge on Stripe's servers - this will charge the user's card
+    def stripe_charge(self,token):
         try:
+            stripe.api_key = settings.STRIPE_SECRET
             charge = stripe.Charge.create(
-                # TODO(pablo) here we got hardcoded business rules, such as price. refactor.
-                amount=300, # amount in cents, likewise
+                amount=300,
                 currency="eur",
                 card=token,
                 description="Meal id "+str(self.id)
             )
-            #self._generate_transaction(charge)
-        except stripe.CardError, e:
-            # The card has been declined
-            raise Exception("There was an error with your payment");
+            self._log_successful_mop_communication(charge)
+
+        # declined -> log, let user know the details
+        except stripe.error.CardError, e:
+            self._log_successful_mop_communication(e.json_body)
+            raise Exception("There was an error with your payment: %s" % body['error'])
+
+        # other errors with Stripe
+        except (
+            stripe.error.AuthenticationError,
+            stripe.error.InvalidRequestError,
+            stripe.error.APIConnectionError,
+            stripe.error.StripeError
+            ) as e:
+            # log all the details 
+            self._log_failed_mop_communication(e.json_body)
+            # show generic error message 
+            raise Exception("There was an error in the payment process")
+
+        # other errors, log all details, show generic error
+        except Exception, e: 
+            self._log_failed_mop_communication(e)
+            raise Exception("There was an error in the payment process")
+
+    # mop means method of payment
+    def _log_failed_mop_communication(self,message):
+        transaction = Transaction(
+            communication_successful = False,
+            payment_successful = False,
+            meal = self,
+            gateway = 's',
+            json_result = json.dumps(message)
+        )
+        transaction.save()
+
+    def  _log_successful_mop_communication(self,charge):
+        transaction = Transaction(
+            communication_successful = True,
+            payment_successful = charge.paid,
+            meal = self,
+            amount = charge.amount,
+            currency = charge.currency,
+            gateway = 's',
+            json_result = json.dumps(charge)
+        )
+        transaction.save()
 
 
 #TODO(pablo) subclass this thing with StripeTransaction to abstract ourselves from that MOP
 class Transaction(models.Model):
     meal = models.ForeignKey(Meal)
-    created_at = models.DateTimeField('date created')
-    amount = models.IntegerField('in cents')
-    # Pending, Accepted, Failed
-    status = models.CharField(max_length=1, default='p')
+    created_at = models.DateTimeField(auto_now_add=True)
+    communication_successful = models.BooleanField()
+    payment_successful = models.BooleanField()
+    amount = models.IntegerField(blank=True, null=True)
+    currency = models.CharField(max_length=3,blank=True, null=True)
     # Stripe
     gateway = models.CharField(max_length=1, default='s')
+    json_result = models.TextField()
     
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
     biography = models.TextField()
-
-
-class Inquiry(models.Model):
-    meal = models.ForeignKey(Meal)
-    sender = models.ForeignKey(User, related_name='sent_inquiries')
-    receiver = models.ForeignKey(User, related_name='received_inquiries')
-    text = models.CharField(max_length=255)
-    created_at = models.DateTimeField('date created')
-    read_at = models.DateTimeField('receiver read it')
-    committed = models.BooleanField()
 
 
 class Invoice(models.Model):
