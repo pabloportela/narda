@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Canalcook.com{% endblock %}</title>
+    <title>{% block title %}canalcook.com{% endblock %}</title>
 
 {% if debug %}
     <script src="{% static "jquery/jquery-1.10.2.js" %}"></script>
@@ -35,13 +35,13 @@
     <!-- Site header and navigation -->
     <header class="top" role="header">
         <div class="container">
-            <a href="/" class="navbar-brand pull-left">Canalcook.com</a>
+            <a href="/" class="navbar-brand pull-left">canalcook.com</a>
             <button class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="glyphicon glyphicon-align-justify"></span>
             </button>
             <nav class="navbar-collapse collapse" role="navigation">
                 <ul class="navbar-nav nav">
-                    <li><a href="{% url "site_info" content="why" %}">Why Canalcook.com?</a></li>
+                    <li><a href="{% url "site_info" content="why" %}">Why canalcook.com?</a></li>
                     <li><a href="{% url "site_info" content="how_it_works" %}">How it works</a></li>
                     <li><a href="{% url "site_info" content="faq" %}">FAQ</a></li>
                     <li><a href="mailto:info@canalcook.com">Contact</a></li>
@@ -55,7 +55,7 @@
     {% block banner %}
     <div class="banner">
         <div class="container text-center">
-            <h3>Eat home made food. For a convenient price. Meet locals at their place. <span class="narda">Meet Canalcook.com.</span></h3>
+            <h3>Eat home made food. For a convenient price. Meet locals at their place. <span class="narda">Meet canalcook.com.</span></h3>
         </div>
     </div>
     {% endblock %}
@@ -71,7 +71,7 @@
     <div class="bottom">
         <div class="container">
             <div class="col-md-3 text-center">
-                <h4><span class="glyphicon glyphicon-cutlery narda-orange"></span> <a href="{% url "site_info" content="why" %}" class="narda-footer">Why Canalcook.com?</a></h4>
+                <h4><span class="glyphicon glyphicon-cutlery narda-orange"></span> <a href="{% url "site_info" content="why" %}" class="narda-footer">Why canalcook.com?</a></h4>
             </div>
             <div class="col-md-3 text-center">
                 <h4><span class="glyphicon glyphicon-retweet narda-orange"></span> <a href="{% url "site_info" content="how_it_works" %}" class="narda-footer">How it works</a></h4>
