@@ -1,4 +1,4 @@
-""" Development settings and globals. """
+
 
 from os import environ
 
@@ -54,7 +54,6 @@ MIDDLEWARE_CLASSES += (
 ########## END TOOLBAR CONFIGURATION
 
 ########## SECRETS
-DATABASES['default']['PASSWORD'] = get_env_setting('NARDA_DB_PASSWORD')
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_env_setting('GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_env_setting('GOOGLE_OAUTH2_SECRET')
 

@@ -26,7 +26,7 @@ SECRET_KEY = '=w%9m!_2^q)^+wqjgv#_j9=2zr=e^_a76yq=47a9%6=($+f60&'
 
 # Need to set this correctly otherwise a 400 Suspicious Operation is thrown.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["127.0.0.1", "haveacheftest.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "haveacheftest.com", ".bilgisayfam.com", ".canalcook.com",]
 
 
 # Application definition
@@ -61,10 +61,8 @@ WSGI_APPLICATION = 'narda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'elbambi_narda',
-        'USER': 'elbambi_narda',
-        'HOST': 'localhost',
     }
 }
 
