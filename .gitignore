@@ -53,6 +53,7 @@ coverage.xml
 docs/_build/
 
 # swap files
+*.ico
 *.swp
 .DS_Store
 

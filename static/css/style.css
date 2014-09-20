@@ -40,7 +40,7 @@ p {
     color: #eee;
 }
 .banner .container {
-    background-color: #FF8000;
+    background-color: #ED5200;
     min-height: 90px;
     padding: 20px 30px 30px 20px;
 }
@@ -62,6 +62,10 @@ p {
     padding-bottom: 20px;
 }
 .navbar-nav li a {
+    height: 100%;
+    width: 100%;
+    display: table-cell;
+    vertical-align: middle;
     color: #CCC;
     font-family: 'Lato', sans-serif;
 }
@@ -82,7 +86,7 @@ p {
     color: #666;
 }
 .navbar-toggle {
-    color: #FF8000;
+    color: #ED5200;
     font-size: 32px;
     margin: 3px;
     padding: 2px 5px;
@@ -108,12 +112,12 @@ p {
     float: none;
 }
 .kitchen-name {
-    color: #FF8000;
+    color: #ED5200;
     font-size: 20px;
     font-weight: 300;
 }
 .narda-orange {
-    color: #FF8000;
+    color: #ED5200;
 }
 .narda-blue {
     color: #3276b1;
