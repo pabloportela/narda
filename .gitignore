@@ -60,6 +60,6 @@ docs/_build/
 narda/settings.py
 
 # data
-static/pictures
+static/*
 
 
