@@ -52,15 +52,3 @@ MIDDLEWARE_CLASSES += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 ########## END TOOLBAR CONFIGURATION
-
-########## SECRETS
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = get_env_setting('GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = get_env_setting('GOOGLE_OAUTH2_SECRET')
-
-SOCIAL_AUTH_FACEBOOK_KEY = get_env_setting('FACEBOOK_KEY')
-SOCIAL_AUTH_FACEBOOK_SECRET = get_env_setting('FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-
-STRIPE_SECRET = get_env_setting('STRIPE_SECRET')
-STRIPE_KEY = get_env_setting('STRIPE_KEY')
-########## END SECRETS
