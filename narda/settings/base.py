@@ -75,10 +75,13 @@ WSGI_APPLICATION = 'narda.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.mysql',
+        'USER': 'elbambi_narda',
         'NAME': 'elbambi_narda',
     }
 }
+
+DATABASES['default']['PASSWORD'] = get_env_setting('NARDA_DB_PASSWORD')
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
