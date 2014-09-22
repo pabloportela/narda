@@ -141,6 +141,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'social.apps.django_app.context_processors.backends',
     'social.apps.django_app.context_processors.login_redirect',
+    'narda.context_processors.add_domain',
 )
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
