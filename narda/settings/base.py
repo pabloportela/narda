@@ -157,3 +157,7 @@ STRIPE_KEY = get_env_setting('STRIPE_KEY')
 ########## END SECRETS
 
 SITE_ID = 1
+ADMINS = (
+    ('Tayfun Sen', 'tayfun.sen@gmail.com'),
+    ('Pablo Portela', 'pablo.portela@gmail.com'),
+)
