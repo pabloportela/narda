@@ -33,7 +33,8 @@ def search(request, date, number_of_guests):
         scheduled_for__lt=(arg_datetime + one_day),
         scheduled_for__gt=arg_datetime,
         status__exact='o',
-        kitchen__available_seats__gte=int(number_of_guests)
+        kitchen__available_seats__gte=int(number_of_guests),
+        kitchen__enabled=True
     ).order_by(
         'scheduled_for'
     ).select_related('kitchen')

@@ -25,6 +25,7 @@ class Kitchen(models.Model):
     longitude = models.FloatField()
     slug = AutoSlugField(populate_from='name')
     available_seats = models.IntegerField()
+    enabled = models.BooleanField()
 
 
 class KitchenReview(models.Model):
