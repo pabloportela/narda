@@ -40,6 +40,7 @@ def search(request, date, number_of_guests):
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
+        'search': True,
         'meal_list': meal_list,
         'date': date,
         'number_of_guests': number_of_guests

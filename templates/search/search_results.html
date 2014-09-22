@@ -1,6 +1,6 @@
 {% if meal_list %}
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="col-md-12">
         <br/>
         <br/>
         {% for m in meal_list %}
@@ -16,9 +16,14 @@
 </style>
 
 {% else %}
+
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    No meals found! Try changing your search filters.
+        <div class="col-md-12">
+        <br/>
+        <br/>
+        <center>
+        <p>No meals found. Try changing your search filters.</p>
+        </center>
         </div>
     </div>
 {% endif %}
