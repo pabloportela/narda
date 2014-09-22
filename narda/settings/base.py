@@ -40,7 +40,7 @@ SECRET_KEY = '=w%9m!_2^q)^+wqjgv#_j9=2zr=e^_a76yq=47a9%6=($+f60&'
 
 # Need to set this correctly otherwise a 400 Suspicious Operation is thrown.
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["127.0.0.1", "haveacheftest.com", ".bilgisayfam.com", ".canalcook.com",]
+ALLOWED_HOSTS = ["127.0.0.1", ".bilgisayfam.com", ".canalcook.com",]
 
 
 # Application definition
@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'social.apps.django_app.default',
     'frontend',
     'notification',
@@ -158,3 +159,5 @@ SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 STRIPE_SECRET = get_env_setting('STRIPE_SECRET')
 STRIPE_KEY = get_env_setting('STRIPE_KEY')
 ########## END SECRETS
+
+SITE_ID = 1
