@@ -37,7 +37,13 @@
         <div class="container">
             <nav class="navbar-collapse collapse" role="navigation">
                 <ul class="navbar-nav nav">
-                    <li><img src="/static/images/logo_small.png"/></li>
+                    <li>
+                        <a href="/">
+                        <span style="font-size: 24px;">
+                            <span class="narda-orange">canal</span><span class="narda-yellow">cook</span>.com
+                        </span>
+                        </a>
+                    </li>
                     <li><a href="{% url "site_info" content="why" %}">Why canalcook.com?</a></li>
                     <li><a href="{% url "site_info" content="how_it_works" %}">How it works</a></li>
                     <li><a href="{% url "site_info" content="faq" %}">FAQ</a></li>
@@ -52,7 +58,7 @@
     {% block banner %}
     <div class="banner">
         <div class="container text-center">
-            <h3>Eat home made food. For a convenient price. Meet locals at their place. <span class="narda">Meet canalcook.com.</span></h3>
+            <h3>Eat home made food, meet with locals. <span class="narda">Find your cook now.</span></h3>
         </div>
     </div>
     {% endblock %}

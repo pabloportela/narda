@@ -21,15 +21,6 @@ p {
 .top {
     background-color: #474747;
 }
-.top .navbar-brand {
-    height: 50px;
-    line-height: 50px;
-    text-align: center;
-    padding: 0 10px;
-    background-color: #CCC;
-    color: #474747;
-    text-decoration: none;
-}
 .top .container {
     padding: 0;
 }
@@ -65,9 +56,9 @@ p {
     height: 100%;
     width: 100%;
     display: table-cell;
-    vertical-align: middle;
     color: #CCC;
     font-family: 'Lato', sans-serif;
+    font-size: 16px;
 }
 .navbar-nav li a:hover {
     background-color: #373737;
@@ -115,6 +106,9 @@ p {
     color: #ED5200;
     font-size: 20px;
     font-weight: 300;
+}
+.narda-yellow {
+    color: #FFC20E;
 }
 .narda-orange {
     color: #ED5200;
