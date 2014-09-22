@@ -100,12 +100,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#STATIC_ROOT = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = ''
-
-STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'static')),
-)
+STATIC_ROOT = join(SITE_ROOT, 'static')
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATE_DIRS = (
