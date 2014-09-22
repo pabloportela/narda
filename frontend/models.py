@@ -40,20 +40,20 @@ class KitchenReview(models.Model):
     )
 
 
-
 class Meal(models.Model):
     scheduled_for = models.DateTimeField('scheduled for')
     kitchen = models.ForeignKey(Kitchen)
     guest = models.ForeignKey(
         User, related_name='guest', blank=True, null=True)
-    number = models.CharField(max_length=6, db_index=True)
+    number = models.CharField(max_length=6, db_index=True, null=True)
     created_at = models.DateTimeField('date created', auto_now=True)
     accepted_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
     # Open, Payment pending, Accepted, Done, Noshow, Canceled, Expired
-    # Canceled: Chef canceled the meal. If the guest cancels it will go back to Open.
+    # Canceled: Chef canceled the meal. If the guest cancels it will go back to
+    # Open.
     status = models.CharField(max_length=1, default='o')
-    number_of_guests = models.IntegerField()
+    number_of_guests = models.IntegerField(null=True)
     review = models.OneToOneField(KitchenReview, null=True)
 
     def meal_datetime(self):
@@ -164,13 +164,13 @@ class Meal(models.Model):
             stripe.error.APIConnectionError,
             stripe.error.StripeError
             ) as e:
-            # log all the details 
+            # log all the details
             self._log_failed_mop_communication(e.json_body)
-            # show generic error message 
+            # show generic error message
             raise Exception("There was an error in the payment process")
 
         # other errors, log all details, show generic error
-        except Exception, e: 
+        except Exception, e:
             self._log_failed_mop_communication(e)
             raise Exception("There was an error in the payment process")
 
@@ -209,7 +209,7 @@ class Transaction(models.Model):
     # Stripe
     gateway = models.CharField(max_length=1, default='s')
     json_result = models.TextField()
-    
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name='profile')
