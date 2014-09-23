@@ -42,7 +42,7 @@ $('#meal_confirmation_modal').on('shown.bs.modal', function() {
   // update form field
   $('#hidden_number_of_guests').val(number_of_guests);
   // update message
-  $('#p_confirmation_message').text('You are about to confirm your booking the meal taking place at {{meal.kitchen.name}} ({{meal.kitchen.address}}) on {{meal.scheduled_for}} for '+number_of_guests+' guests. The reservation cost is 3 EUR and will be deducted from the cost of the meal.');
+  $('#p_confirmation_message').text('You are about to confirm your booking the meal taking place at {{meal.kitchen.name}} ({{meal.kitchen.address}}) on {{meal.scheduled_for}} for '+number_of_guests+' guests. The cost of the reservation is 3 euros, but it already counts as an advance payment for your meal.');
 })
 
 // user not logged in, button redirects to facebook
