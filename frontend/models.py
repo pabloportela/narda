@@ -1,7 +1,6 @@
 from django.db import IntegrityError, DatabaseError, transaction, models
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
-from django.core import exceptions
 from django.utils import timezone
 from autoslug import AutoSlugField
 from django.conf import settings
@@ -80,7 +79,7 @@ class Meal(models.Model):
             # get the meal with row lock
             try:
                 meal = Meal.objects.select_for_update().get(id=meal_id)
-            except ObjectDoesNotExist:
+            except Meal.DoesNotExist:
                 raise Exception("Meal does not exist")
 
             # validation
