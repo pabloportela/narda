@@ -4,6 +4,7 @@ from django.utils.crypto import get_random_string
 from django.utils import timezone
 from autoslug import AutoSlugField
 from django.conf import settings
+from frontend.exceptions import UserException
 import stripe
 import json
 
@@ -44,7 +45,7 @@ class Meal(models.Model):
     kitchen = models.ForeignKey(Kitchen)
     guest = models.ForeignKey(
         User, related_name='guest', blank=True, null=True)
-    number = models.CharField(max_length=6, db_index=True, null=True)
+    number = models.CharField(max_length=6, db_index=True, null=True, blank=True)
     created_at = models.DateTimeField('date created', auto_now=True)
     accepted_at = models.DateTimeField(blank=True, null=True)
     cancelled_at = models.DateTimeField(blank=True, null=True)
@@ -52,8 +53,8 @@ class Meal(models.Model):
     # Canceled: Chef canceled the meal. If the guest cancels it will go back to
     # Open.
     status = models.CharField(max_length=1, default='o')
-    number_of_guests = models.IntegerField(null=True)
-    review = models.OneToOneField(KitchenReview, null=True)
+    number_of_guests = models.IntegerField(blank=True,null=True)
+    review = models.OneToOneField(KitchenReview,blank=True,null=True)
 
     def meal_datetime(self):
         # We need to transform to naive datetime to show to users.
@@ -149,12 +150,14 @@ class Meal(models.Model):
                 card=token,
                 description="Meal id "+str(self.id)
             )
-            self._log_successful_mop_communication(charge)
+            #raise stripe.error.CardError('Card error!')
+            self._log_successful_mop_payment(charge)
 
         # declined -> log, let user know the details
-        except stripe.error.CardError, e:
-            self._log_successful_mop_communication(e.json_body)
-            raise Exception("There was an error with your payment: %s" % body['error'])
+        except stripe.error.CardError as e:
+            #import ipdb; ipdb.set_trace();
+            self._log_failed_mop_payment(e,True)
+            raise UserException(e)
 
         # other errors with Stripe
         except (
@@ -164,27 +167,27 @@ class Meal(models.Model):
             stripe.error.StripeError
             ) as e:
             # log all the details
-            self._log_failed_mop_communication(e.json_body)
+            self._log_failed_mop_payment(e,False)
             # show generic error message
-            raise Exception("There was an error in the payment process")
+            raise UserException("There was an error in the payment process")
 
         # other errors, log all details, show generic error
-        except Exception, e:
-            self._log_failed_mop_communication(e)
-            raise Exception("There was an error in the payment process")
+        except Exception as e:
+            self._log_failed_mop_payment(e,True)
+            raise UserException("There was an error in the payment process")
 
     # mop means method of payment
-    def _log_failed_mop_communication(self,message):
+    def _log_failed_mop_payment(self,message,communication_successful):
         transaction = Transaction(
-            communication_successful = False,
+            communication_successful = communication_successful,
             payment_successful = False,
             meal = self,
             gateway = 's',
-            json_result = json.dumps(message)
+            json_result = message
         )
         transaction.save()
 
-    def  _log_successful_mop_communication(self,charge):
+    def  _log_successful_mop_payment(self,charge):
         transaction = Transaction(
             communication_successful = True,
             payment_successful = charge.paid,

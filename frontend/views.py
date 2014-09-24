@@ -8,6 +8,7 @@ from django.db import IntegrityError, DatabaseError, transaction
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
+from frontend.models import UserException
 from frontend.models import Meal, KitchenReview
 from frontend.forms import KitchenReviewForm
 
@@ -92,7 +93,16 @@ def book(request):
     number_of_guests = request.POST.get('number_of_guests')
     stripe_token = request.POST.get('stripe_token')
 
-    meal = Meal.book(meal_id,request.user,number_of_guests,stripe_token)
+    try:
+        meal = Meal.book(meal_id,request.user,number_of_guests,stripe_token)
+    except UserException as e:
+        context = RequestContext(request, {
+            'request': request,
+            'user': request.user,
+            'message': e.message
+        })
+        return render_to_response(
+            '500.html', context_instance=context);
 
     context = RequestContext(request, {
         'request': request,

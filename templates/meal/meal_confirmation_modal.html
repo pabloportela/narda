@@ -32,7 +32,7 @@ $(document).ready(function() {
   var handler = StripeCheckout.configure({
     key: '{{ stripe_key }}',
     token: function(token) {
-      console.log('Your payment have been made.');
+      console.log('Your payment has been made.');
       console.log(token);
       $('#stripe_token').val(token.id);
       $('#meal_form').submit();
