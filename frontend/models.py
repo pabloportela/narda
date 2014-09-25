@@ -150,13 +150,11 @@ class Meal(models.Model):
                 card=token,
                 description="Meal id "+str(self.id)
             )
-            #raise stripe.error.CardError('Card error!')
-            self._log_successful_mop_payment(charge)
 
         # declined -> log, let user know the details
         except stripe.error.CardError as e:
             #import ipdb; ipdb.set_trace();
-            self._log_failed_mop_payment(e,True)
+            self._log_failed_mop_payment(e,token,True)
             raise UserException(e)
 
         # other errors with Stripe
@@ -167,27 +165,36 @@ class Meal(models.Model):
             stripe.error.StripeError
             ) as e:
             # log all the details
-            self._log_failed_mop_payment(e,False)
+            self._log_failed_mop_payment(e,token,False)
             # show generic error message
             raise UserException("There was an error in the payment process")
 
         # other errors, log all details, show generic error
         except Exception as e:
-            self._log_failed_mop_payment(e,True)
+            self._log_failed_mop_payment(e,token,True)
             raise UserException("There was an error in the payment process")
 
+        #success, we log
+        try:
+            self._log_successful_mop_payment(token,charge)
+        # we could not log the payment, but we want to move forward 
+        # and let the user know the payment went fine
+        except Exception:
+            pass
+
     # mop means method of payment
-    def _log_failed_mop_payment(self,message,communication_successful):
+    def _log_failed_mop_payment(self,message,token,communication_successful):
         transaction = Transaction(
             communication_successful = communication_successful,
             payment_successful = False,
             meal = self,
             gateway = 's',
+            token = token,
             json_result = message
         )
         transaction.save()
 
-    def  _log_successful_mop_payment(self,charge):
+    def  _log_successful_mop_payment(self,token,charge):
         transaction = Transaction(
             communication_successful = True,
             payment_successful = charge.paid,
@@ -195,6 +202,7 @@ class Meal(models.Model):
             amount = charge.amount,
             currency = charge.currency,
             gateway = 's',
+            token = token,
             json_result = json.dumps(charge)
         )
         transaction.save()
@@ -210,6 +218,7 @@ class Transaction(models.Model):
     currency = models.CharField(max_length=3,blank=True, null=True)
     # Stripe
     gateway = models.CharField(max_length=1, default='s')
+    token = models.CharField(max_length=40)
     json_result = models.TextField()
 
 

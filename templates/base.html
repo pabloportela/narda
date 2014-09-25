@@ -66,6 +66,7 @@
     <!-- Middle content section -->
     <div class="middle">
         <div class="container">
+    {% if messages %}{% include "alerts.html" %}{% endif %}
     {% block content %}{% endblock %}
         </div>
     </div>

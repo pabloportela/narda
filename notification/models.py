@@ -29,7 +29,11 @@ class Notification(models.Model):
         # Strip, otherwise we get header errors.
         subject = subject_template.render(context).strip()
         body = body_template.render(context)
-        sent = send_mail(subject, body, FROM_ADDRESS, [to_address])
+        try:
+            sent = send_mail(subject, body, FROM_ADDRESS, [to_address])
+        except Exception:
+            pass
+
         status = 's' if sent else 'e'
         Notification.objects.create(
             from_address=FROM_ADDRESS,

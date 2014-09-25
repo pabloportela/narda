@@ -7,13 +7,15 @@ from django.utils import timezone
 from django.db import IntegrityError, DatabaseError, transaction
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
+from django.core.mail import send_mail
+from django.contrib import messages
 
-from frontend.models import UserException
-from frontend.models import Meal, KitchenReview
+from frontend.models import Meal, KitchenReview, UserException
 from frontend.forms import KitchenReviewForm
 
 
 def index(request):
+    messages.add_message(request, messages.INFO, 'Over 9000!', extra_tags='info')
     context = RequestContext(
         request,
         {'request': request, 'user': request.user}
@@ -95,15 +97,19 @@ def book(request):
 
     try:
         meal = Meal.book(meal_id,request.user,number_of_guests,stripe_token)
+
     except UserException as e:
         context = RequestContext(request, {
-            'request': request,
             'user': request.user,
-            'message': e.message
+            'message': e
         })
-        return render_to_response(
-            '500.html', context_instance=context);
+        return render_to_response('meal/meal_payment_error.html', context_instance=context);
 
+    except Exception:
+        context = RequestContext(request, { 'user': request.user })
+        return render_to_response('meal/meal_payment_error.html', context_instance=context);
+
+    # success
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
