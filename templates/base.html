@@ -89,14 +89,14 @@
               <div class="col-md-12">
                 <center>
                 <br/>
-                <img src="{% static "images/logo_regular.png" %}" height="85" >
+                <a href="/"><img src="{% static "images/logo_regular.png" %}" height="85"></a>
                 </center>
                 <br/>
               </div>
             </div>
         </div>
     </div>
-{% include "user_tracking.html" %}
+{% if not debug %}{% include "user_tracking.html" %}{% endif %}
 </body>
 </html>
 </html>
