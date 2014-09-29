@@ -1,17 +1,14 @@
 {% load staticfiles %}
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
+                    <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug number_of_guests=number_of_guests %}">
                     <div class="panel panel-default" style="border-radius: 0px;">
                         <div class="panel-body row">
                             <div class="col-md-3">
-                                <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug number_of_guests=number_of_guests %}">
                                     <img src="/static/pictures/kitchens/{{m.kitchen.id}}/160x120/01.png" height="120" width="160"/>
-                                </a>
                             </div>
                             <div class="col-md-4">
-                                <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug number_of_guests=number_of_guests %}">
                                     <span class="narda-orange kitchen-name">{{m.kitchen.name}}</span>
-                                </a>
                                 <br/>
                                 {{m.kitchen.summary}}
                             </div>
@@ -23,5 +20,6 @@
                             </div>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
