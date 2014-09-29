@@ -15,7 +15,7 @@ from frontend.forms import KitchenReviewForm
 
 
 def index(request):
-    messages.add_message(request, messages.INFO, 'Over 9000!', extra_tags='info')
+    #messages.add_message(request, messages.INFO, 'Over 9000!', extra_tags='info')
     context = RequestContext(
         request,
         {'request': request, 'user': request.user}

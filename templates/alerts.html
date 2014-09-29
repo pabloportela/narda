@@ -1,0 +1,9 @@
+    {% for message in messages %}
+    <br/>
+    <div class="alert alert-{{message.extra_tags}}" role="alert">
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+      </button>
+      {{message}}
+    </div>
+    {% endfor %}
