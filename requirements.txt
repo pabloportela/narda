@@ -5,4 +5,5 @@ django-extensions==1.3.10
 django-autoslug==1.7.2
 ipdb==0.8
 stripe==1.19.0
-psycopg2
+raven==5.0.0
+psycopg2==2.5.4

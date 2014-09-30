@@ -1,15 +1,59 @@
-upstream app_server {
+upstream prod_uwsgi {
+    server unix:/home/django/Envs/narda/tmp/uwsgi.sock fail_timeout=0;
+}
+
+upstream staging_uwsgi {
     server unix:/home/django/Envs/narda/tmp/uwsgi.sock fail_timeout=0;
 }
 
 server {
     listen 80 default_server;
+    server_tokens off;
     return 444;
 }
 
 server {
     listen 443 default_server ssl;
+    server_tokens off;
     return 444;
+
+    ssl on;
+    ssl_certificate /etc/ssl/certs/ssl-bundle.crt;
+    ssl_certificate_key /etc/ssl/private/domain.key;
+
+    #enables SSLv3/TLSv1, but not SSLv2 which is weak and should no longer be used.
+    ssl_protocols SSLv3 TLSv1;
+#Disables all weak ciphers
+    ssl_ciphers ALL:!aNULL:!ADH:!eNULL:!LOW:!EXP:RC4+RSA:+HIGH:+MEDIUM;
+}
+
+
+server {
+    listen 443;
+    server_tokens off;
+
+    server_name staging.canalcook.com;
+    charset utf-8;
+
+    client_max_body_size 2M;
+
+    keepalive_timeout 5;
+
+    location /static {
+        alias /home/django/narda/static; 
+    }
+
+    location /favicon.ico {
+        alias /home/django/narda/static/favicon.ico; 
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        uwsgi_pass  staging_uwsgi;
+        include     /etc/nginx/uwsgi_params;
+    }
 
     ssl on;
     ssl_certificate /etc/ssl/certs/ssl-bundle.crt;
@@ -24,6 +68,7 @@ server {
 server {
     listen 443;
     listen [::]:443 ipv6only=on;
+    server_tokens off;
 
     server_name canalcook.com www.canalcook.com;
     charset utf-8;
@@ -44,7 +89,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_redirect off;
-        uwsgi_pass  app_server;
+        uwsgi_pass  prod_uwsgi;
         include     /etc/nginx/uwsgi_params;
     }
 
@@ -60,6 +105,7 @@ server {
 
 server {
     listen 80;
+    server_tokens off;
     return 301 https://$host$request_uri;
-    server_name canalcook.com www.canalcook.com;
+    server_name canalcook.com www.canalcook.com staging.canalcook.com;
 }
