@@ -26,7 +26,9 @@ class Kitchen(models.Model):
     slug = AutoSlugField(populate_from='name')
     available_seats = models.IntegerField()
     enabled = models.BooleanField()
-
+    
+    def __unicode__(self):
+        return "%s (%s)" % (self.name, self.chef.username)
 
 class KitchenReview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -55,6 +57,9 @@ class Meal(models.Model):
     status = models.CharField(max_length=1, default='o')
     number_of_guests = models.IntegerField(blank=True,null=True)
     review = models.OneToOneField(KitchenReview,blank=True,null=True)
+
+    def __unicode__(self):
+        return "%s for %s , %s" % (self.kitchen, self.scheduled_for.strftime("%c"), self.status)
 
     def meal_datetime(self):
         # We need to transform to naive datetime to show to users.
