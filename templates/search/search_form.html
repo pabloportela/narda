@@ -30,18 +30,24 @@
 
         <script>
         $(function() {
-            $("#datepicker").datepicker({ minDate: 0, maxDate: "+3M" });
+            var dateFormat = "d MM - DD";
+            var $datePicker = $("#datepicker");
+            $datePicker.datepicker({minDate: 0, maxDate: "+3M", dateFormat: dateFormat, gotoCurrent: true});
+            // $datePicker.datepicker("option", "dateFormat", dateFormat);
+            var selectedDate = new Date($("#datepicker").val());
+            if (selectedDate) {
+              $datePicker.datepicker("setDate", selectedDate);
+            }
             $('#search_form').submit(function(e) {
+                var selectedDate = $("#datepicker").datepicker("getDate");
                 // prevent it from submitting directly
                 e.preventDefault();
-
                 // validate input 
                 if (!validate_search_form()) {
                     return -1;
                 }
-
                 // format it for mysql
-                scheduled_for = $.datepicker.formatDate("yy-mm-dd",$( "#datepicker").datepicker("getDate"));
+                scheduled_for = $.datepicker.formatDate("yy-mm-dd", selectedDate);
                 number_of_guests = $('#number_of_guests').val();
                 search_url = get_search_location(scheduled_for,number_of_guests);
                 window.location = search_url;

@@ -15,18 +15,19 @@ from frontend.forms import KitchenReviewForm
 
 
 def index(request):
-    #messages.add_message(request, messages.INFO, 'Over 9000!', extra_tags='info')
     context = RequestContext(
         request,
         {'request': request, 'user': request.user}
     )
     return render_to_response('index.html', context_instance=context)
 
-'''
-TODO(pablo) search filters by GET does not scale. for now we are ok but we gotta
-do POST and validate when database is bigger and we really have to search & sort.
-'''
+
 def search(request, date, number_of_guests):
+    '''
+    TODO(pablo) search filters by GET does not scale. for now we are ok but
+    we gotta do POST and validate when database is bigger and we really have
+    to search & sort.
+    '''
     arg_datetime = timezone.make_aware(
         datetime.strptime(date, '%Y-%m-%d'),
         timezone.get_current_timezone(),
@@ -52,14 +53,21 @@ def search(request, date, number_of_guests):
     return render_to_response('index.html', context_instance=context)
 
 
-def kitchen_detail(request, meal_datetime, kitchen_slug,
-                   number_of_guests=None):
+def kitchen_detail(request, kitchen_slug,
+                   meal_datetime=None, number_of_guests=None):
+    """
+
+    """
     meal_datetime = datetime.strptime(meal_datetime, '%Y-%m-%d/%H/%M')
     meal_datetime = timezone.make_aware(
         meal_datetime,
         timezone.get_current_timezone(),
     )
-    meal = Meal.objects.prefetch_related('kitchen__reviews','kitchen__chef','kitchen__reviews__guest').get(
+    meal = Meal.objects.prefetch_related(
+        'kitchen__reviews',
+        'kitchen__chef',
+        'kitchen__reviews__guest'
+    ).get(
         kitchen__slug=kitchen_slug,
         scheduled_for=meal_datetime,
     )
@@ -78,25 +86,27 @@ def kitchen_detail(request, meal_datetime, kitchen_slug,
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
 
-'''
-mysql currently does not support nowait=True so in the case of booking concurrency,
-the unlucky second booker with wait in vain, but will receive the proper error
-message and hopefully we won't have overbookings.
-
-jesus christ, I hope we have bookings at all.
-
-anyway, it is important to lock, because at the beggining there won't be
-many chefs and we will charge money upon booking.
-'''
 
 @login_required
 def book(request):
+    '''
+    mysql currently does not support nowait=True so in the case of booking
+    concurrency, the unlucky second booker with wait in vain, but will receive
+    the proper error message and hopefully we won't have overbookings.
+
+    jesus christ, I hope we have bookings at all.
+
+    anyway, it is important to lock, because at the beggining there won't be
+    many chefs and we will charge money upon booking.
+    '''
     meal_id = request.POST.get('meal_id')
     number_of_guests = request.POST.get('number_of_guests')
     stripe_token = request.POST.get('stripe_token')
 
     try:
-        meal = Meal.book(meal_id,request.user,number_of_guests,stripe_token)
+        meal = Meal.book(
+            meal_id, request.user, number_of_guests, stripe_token
+        )
 
     except UserException as e:
         context = RequestContext(request, {
