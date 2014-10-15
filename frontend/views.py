@@ -15,9 +15,10 @@ from frontend.forms import KitchenReviewForm
 
 
 def index(request):
+    highlighted_meals = Meal.get_highlighted_meals()
     context = RequestContext(
         request,
-        {'request': request, 'user': request.user}
+        {'request': request, 'user': request.user, 'highlighted_meals': highlighted_meals}
     )
     return render_to_response('index.html', context_instance=context)
 

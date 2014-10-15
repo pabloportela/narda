@@ -2,6 +2,7 @@ from django.db import IntegrityError, DatabaseError, transaction, models
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 from django.utils import timezone
+from datetime import timedelta
 from autoslug import AutoSlugField
 from django.conf import settings
 from frontend.exceptions import UserException
@@ -12,6 +13,7 @@ from notification.models import Notification
 
 
 class Kitchen(models.Model):
+    booking_window = 4
     chef = models.ForeignKey(User)
     name = models.CharField(max_length=255)
     summary = models.CharField(max_length=255)
@@ -212,6 +214,17 @@ class Meal(models.Model):
         )
         transaction.save()
 
+    @staticmethod
+    def get_highlighted_meals():
+        meals = Meal.objects.filter(
+            scheduled_for__gt=timezone.now() + timedelta(hours=Kitchen.booking_window),
+            status__exact='o',
+            kitchen__enabled=True
+        ).order_by(
+            'scheduled_for'
+        ).select_related('kitchen')[:5]
+        #import ipdb; ipdb.set_trace()
+        return meals
 
 #TODO(pablo) subclass this thing with StripeTransaction to abstract ourselves from that MOP
 class Transaction(models.Model):
