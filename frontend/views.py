@@ -1,16 +1,12 @@
 from datetime import datetime, timedelta
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.db import IntegrityError, DatabaseError, transaction
-from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
-from django.core.mail import send_mail
-from django.contrib import messages
 
-from frontend.models import Meal, KitchenReview, UserException
+from frontend.models import Meal, KitchenReview, UserException, Kitchen
 from frontend.forms import KitchenReviewForm
 
 
@@ -57,32 +53,55 @@ def search(request, date, number_of_guests):
 def kitchen_detail(request, kitchen_slug,
                    meal_datetime=None, number_of_guests=None):
     """
+    This is a generic page now, we might or we might not have a datetime
+    and we might be able to fetch some meals or not.
 
+    The only thing mandatory is kitchen_slug and that we should have a kitchen
+    in our DB with that slug.
     """
-    meal_datetime = datetime.strptime(meal_datetime, '%Y-%m-%d/%H/%M')
-    meal_datetime = timezone.make_aware(
-        meal_datetime,
-        timezone.get_current_timezone(),
-    )
-    meal = Meal.objects.prefetch_related(
+    # kitchen_slug is the only mandatory argument here.
+    kwargs = {
+        "kitchen__slug": kitchen_slug,
+        # FIXME: Add that meal should be available also.
+    }
+    if meal_datetime:
+        # Get the next 100 meals this kitchen has and show them.
+        meal_datetime = datetime.strptime(meal_datetime, '%Y-%m-%d/%H/%M')
+        meal_datetime = timezone.make_aware(
+            meal_datetime,
+            timezone.get_current_timezone(),
+        )
+        kwargs['scheduled_for'] = meal_datetime
+    meals = Meal.objects.prefetch_related(
         'kitchen__reviews',
         'kitchen__chef',
         'kitchen__reviews__guest'
-    ).get(
-        kitchen__slug=kitchen_slug,
-        scheduled_for=meal_datetime,
-    )
-    if not meal:
-        raise Http404()
+    ).filter(**kwargs)
 
+    if not meals:
+        kitchen = Kitchen.objects.get(slug=kitchen_slug)
+        if not kitchen:
+            # There's not even a kitchen with this slug, 404
+            raise Http404
+    else:
+        kitchen = meals[0].kitchen
+        if len(meals) == 1:
+            meal = meals[0]
+            meals = None
+
+    # We always have kitchen object here. We might have a "meal" or "meals"
+    # depending on how many matching meals we have (and that in turn depending
+    # on if we had a search date time or not probably).
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
+        'meals': meals,
         'meal': meal,
-        'available_seats': range(1, meal.kitchen.available_seats + 1),
+        'kitchen': kitchen,
+        'available_seats': range(1, kitchen.available_seats + 1),
         'image_number': range(1, 6),
         'number_of_guests': number_of_guests,
-        'stripe_key': settings.STRIPE_KEY
+        'stripe_key': settings.STRIPE_KEY,
     })
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
@@ -114,11 +133,18 @@ def book(request):
             'user': request.user,
             'message': e
         })
-        return render_to_response('meal/meal_payment_error.html', context_instance=context);
+        return render_to_response(
+            'meal/meal_payment_error.html',
+            context_instance=context
+        )
 
     except Exception:
-        context = RequestContext(request, { 'user': request.user })
-        return render_to_response('meal/meal_payment_error.html', context_instance=context);
+        context = RequestContext(
+            request, {'user': request.user}
+        )
+        return render_to_response(
+            'meal/meal_payment_error.html', context_instance=context
+        )
 
     # success
     context = RequestContext(request, {
@@ -140,7 +166,7 @@ def site_info(request, content):
 @login_required
 def my_meals(request):
     dine_meals = {}
-    for meal_type, status in { 'upcoming':'a', 'done':'d'}.iteritems():
+    for meal_type, status in {'upcoming': 'a', 'done': 'd'}.iteritems():
         dine_meals[meal_type] = Meal.objects.filter(
             guest=request.user,
             status=status,
@@ -149,7 +175,9 @@ def my_meals(request):
         ).select_related("kitchen")
 
     cook_meals = {}
-    for meal_type, status in { 'open':'o', 'upcoming':'a', 'done':'d', 'cancelled':'c' }.iteritems():
+    for meal_type, status in {
+        'open': 'o', 'upcoming': 'a', 'done': 'd', 'cancelled': 'c'
+    }.iteritems():
         cook_meals[meal_type] = Meal.objects.filter(
             kitchen__chef=request.user,
             status=status,
@@ -159,25 +187,25 @@ def my_meals(request):
 
     context = RequestContext(request, {
         'request': request,
-        'has_meals' : any(dine_meals.values()) or any(cook_meals.values()),
+        'has_meals': any(dine_meals.values()) or any(cook_meals.values()),
 
-        'dine_meal_list_upcoming' : dine_meals['upcoming' ],
-        'dine_meal_list_done'     : dine_meals['done'     ],
+        'dine_meal_list_upcoming': dine_meals['upcoming'],
+        'dine_meal_list_done': dine_meals['done'],
 
-        'cook_meal_list_upcoming' : cook_meals['upcoming' ],
-        'cook_meal_list_open'     : cook_meals['open'     ],
+        'cook_meal_list_upcoming': cook_meals['upcoming'],
+        'cook_meal_list_open': cook_meals['open'],
         'cook_meal_list_cancelled': cook_meals['cancelled'],
-        'cook_meal_list_done'     : cook_meals['done'     ],
+        'cook_meal_list_done': cook_meals['done'],
     })
     return render_to_response(
         'dashboard/my_meals.html', context_instance=context)
 
 
 def post_guest_review(request, kitchen_slug, token):
-    # TODO(Tayfun): Commented out reviewed_at criteria for testing.
+    # Note(Tayfun): Comment out reviewed_at criteria for testing.
     review_list = KitchenReview.objects.filter(
         token=token,
-        # reviewed_at__isnull=True
+        reviewed_at__isnull=True
     ).select_related(
         'kitchen',
         'meal'

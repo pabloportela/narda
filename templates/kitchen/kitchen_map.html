@@ -1,12 +1,12 @@
 
-<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=200x200&maptype=roadmap&markers=color:orange%7Clabel:S%7C{{meal.kitchen.latitude}},{{meal.kitchen.longitude}}" data-toggle="modal" data-target="#kitchen_map_modal">
+<img src="https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=200x200&maptype=roadmap&markers=color:orange%7Clabel:S%7C{{kitchen.latitude}},{{kitchen.longitude}}" data-toggle="modal" data-target="#kitchen_map_modal">
 
 <div class="modal fade bs-example-modal-lg" id="kitchen_map_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">{{meal.kitchen.name}}'s location</h4>
+        <h4 class="modal-title" id="myModalLabel">{{kitchen.name}}'s location</h4>
       </div>
       <div class="modal-body">
         <div id="map" class="map">
@@ -18,14 +18,14 @@
 <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript">
 function init_map() {
-    var myLocation = new google.maps.LatLng({{meal.kitchen.latitude}},{{meal.kitchen.longitude}});
+    var myLocation = new google.maps.LatLng({{kitchen.latitude}},{{kitchen.longitude}});
     var mapOptions = {
         center: myLocation,
         zoom: 15
     };
     var marker = new google.maps.Marker({
         position: myLocation,
-        title: "{{meal.kitchen.name}}"
+        title: "{{kitchen.name}}"
     });
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
     marker.setMap(map);
