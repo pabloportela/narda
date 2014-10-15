@@ -165,3 +165,7 @@ p {
     margin-left: auto;
     margin-right: auto;
 }
+
+#datepicker {
+    width: 14em;
+}
