@@ -1,8 +1,8 @@
 <h4 class="narda-orange">User Reviews</h4>
 
-{% if meal.kitchen.reviews.all %}
+{% if kitchen.reviews.all %}
 
-  {% for review in meal.kitchen.reviews.all %}
+  {% for review in kitchen.reviews.all %}
     {% if review.reviewed_at %}
       {% include "review/single_review.html" with review=review %}
     {% endif %}

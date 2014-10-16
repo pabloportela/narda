@@ -1,45 +1,26 @@
 {% load staticfiles %}
 <div class="row">
-    <div class="col-md-10 col-md-offset-1">
-        <center>
-        <h2 class="narda-orange">
-        {{meal.kitchen.name}}
-        </h2>
-        <p class="text-center">{{meal.kitchen.summary}}</p>
-        </center>
+  <div class="col-md-10 col-md-offset-1">
+    <center>
+      <h2 class="narda-orange">
+        {{kitchen.name}}
+      </h2>
+      <p class="text-center">{{kitchen.summary}}</p>
+    </center>
+{% if meal %}
+  {% include "meal/meal_summary.html" with meal=meal %}
+{% endif %}
 
-          <div>
-            <h4>&nbsp;<span class="glyphicon glyphicon-time narda-blue"></span> {{meal.scheduled_for}}</h4>
-            <h4>&nbsp;<span class="glyphicon glyphicon-map-marker narda-blue"></span> {{meal.kitchen.address}}</h4>
-            <h4>&nbsp;<span class="glyphicon glyphicon-euro narda-blue"></span> {{meal.kitchen.dishes_from}} is starting dish price</h4>
-            <h4>&nbsp;<span class="glyphicon glyphicon-user narda-blue"></span> Up to {{meal.kitchen.available_seats}} guests</h4>
-            {% if meal.status = 'o' %}
-            <h4>&nbsp;<span class="glyphicon glyphicon-ok-circle narda-green"></span> Available to book!</h4>
-            {% else %}
-            <h4>&nbsp;<span class="glyphicon glyphicon-ban-circle narda-red"></span> Not available</h4>
-            {% endif %}
+    <h4 class="narda-orange">Menu</h4>
+    {{kitchen.menu | escape | linebreaks}}
 
-          </div>
-          {% if meal.status = 'o' %}
-          <div>
-          <center>
-            <br/>
-            {% include "meal/meal_book_button.html" %}
-          </center>
-          </div>
-          {% endif %}
+    <h4 class="narda-orange">House Rules</h4>
+    {{kitchen.house_rules | escape | linebreaks}}
 
-
-        <h4 class="narda-orange">Menu</h4>
-        {{meal.kitchen.menu | escape | linebreaks}}
-
-        <h4 class="narda-orange">House Rules</h4>
-        {{meal.kitchen.house_rules | escape | linebreaks}}
-
-        <center>
-        <br/>
-        <h4 class="narda-orange">Click map for directions</h4>
-        {% include "kitchen/kitchen_map.html" %}
-        </center>
-    </div>
+    <center>
+      <br/>
+      <h4 class="narda-orange">Click map for directions</h4>
+      {% include "kitchen/kitchen_map.html" %}
+    </center>
+  </div>
 </div>

@@ -17,6 +17,17 @@ urlpatterns = patterns(
     # homepage
     url(r'^$', views.index, name='index'),
 
+    # kitchen homepage. eg. kitchen/johnskitchen/
+    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/$',
+        views.kitchen_detail,
+        name='kitchen_detail'),
+
+    # meal on a single day (but no time). eg. kitchen/johnskitchen/2014-08-11/
+    # FIXME: But we need a flexinle parser.
+    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<meal_datetime>\d{4}-\d{2}-\d{2}/)/$',
+        views.kitchen_detail,
+        name='kitchen_detail'),
+
     # specific meal. eg. kitchen/johnskitchen/2014-08-11/12/35
     url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<meal_datetime>\d{4}-\d{2}-\d{2}/\d{2}/\d{2})/$',
         views.kitchen_detail,
