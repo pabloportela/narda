@@ -1,0 +1,33 @@
+{% load staticfiles %}
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+    <br/>
+    <div id="highlighted_meals_carousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        {% for m in highlighted_meals %}
+          <li data-target="#highlighted_meals_carousel" data-slide-to="{{forloop.counter0}}"{% if forloop.counter0 = 0 %} class="active"{% endif %}></li>
+        {% endfor %}
+      </ol>
+
+      <!-- Wrapper for slides -->
+      <div class="carousel-inner">
+        {% for m in highlighted_meals %}
+        <div class="item{% if forloop.counter0 = 0 %} active{% endif %}">
+          <img src="/static/pictures/kitchens/{{m.kitchen.id}}/640x480/01.png" width="480" height="360" alt="{{m.kitchen}}"/>
+          <div class="carousel-caption">{{m.kitchen}}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Controls -->
+      <a class="left carousel-control" href="#highlighted_meals_carousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+      <a class="right carousel-control" href="#highlighted_meals_carousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </a>
+    </div>
+    <br/>
+    </div>
+  </div>
