@@ -61,7 +61,9 @@ class Meal(models.Model):
     review = models.OneToOneField(KitchenReview,blank=True,null=True)
 
     def __unicode__(self):
-        return "%s for %s , %s" % (self.kitchen, self.scheduled_for.strftime("%c"), self.status)
+        return u"%s for %s , %s" % (
+            self.kitchen, self.scheduled_for.strftime("%c"), self.status
+        )
 
     def meal_datetime(self):
         # We need to transform to naive datetime to show to users.

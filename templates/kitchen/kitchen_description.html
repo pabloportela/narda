@@ -9,6 +9,8 @@
     </center>
 {% if meal %}
   {% include "meal/meal_summary.html" with meal=meal %}
+{% else %}
+  {% include "meal/select_meal.html" with meals=meals %}
 {% endif %}
 
     <h4 class="narda-orange">Menu</h4>

@@ -1,0 +1,36 @@
+<form class="form-inline" role="form" action_id="get_meal" method="get" style="text-align: center;">
+  <h3 class="narda-orange">
+    Select Your Meal Time
+  </h3>
+  {% if meals %}
+  <div class="form-group">
+    <select class="form-control form-element-narda" name="meal_date" id="meal_date" required="true" placeholder="Meal Date">
+      <option> Select Meal Date </option>
+      {% for meal in meals %}
+      <option value="{{ meal.scheduled_for|date:'Y-m-d/H/i' }}">
+        {{ meal.scheduled_for }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <script>
+    $(function() {
+      var $meal_date = $("#meal_date");
+      var reReplaceDate = /\d+-\d+-\d+(\/\d+-\d+)?\/*/
+      $('#meal_date').change(function() {
+        var meal_date = $meal_date.val();
+        if (!meal_date) {
+          return;
+        }
+        var path = window.location.pathname.replace(reReplaceDate, "");
+        window.location = path + meal_date + "/";
+      });
+    });
+  </script>
+  {% else %}
+  <div class="text-danger">
+  We are sorry there are no meals left for this kitchen{% if meal_datetime%} for the selected date: <p>{{ meal_datetime }}</p>{% endif %}.
+  </div>
+  {% endif %}
+
+</form>

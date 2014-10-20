@@ -24,7 +24,7 @@ urlpatterns = patterns(
 
     # meal on a single day (but no time). eg. kitchen/johnskitchen/2014-08-11/
     # FIXME: But we need a flexinle parser.
-    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<meal_datetime>\d{4}-\d{2}-\d{2}/)/$',
+    url(r'^kitchen/(?P<kitchen_slug>[\w\-]*)/(?P<meal_datetime>\d{4}-\d{2}-\d{2})/$',
         views.kitchen_detail,
         name='kitchen_detail'),
 

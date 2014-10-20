@@ -8,13 +8,18 @@ from django.conf import settings
 
 from frontend.models import Meal, KitchenReview, UserException, Kitchen
 from frontend.forms import KitchenReviewForm
+from frontend.utils import add_date
 
 
 def index(request):
     highlighted_meals = Meal.get_highlighted_meals()
     context = RequestContext(
         request,
-        {'request': request, 'user': request.user, 'highlighted_meals': highlighted_meals}
+        {
+            'request': request,
+            'user': request.user,
+            'highlighted_meals': highlighted_meals
+        }
     )
     return render_to_response('index.html', context_instance=context)
 
@@ -64,20 +69,15 @@ def kitchen_detail(request, kitchen_slug,
         "kitchen__slug": kitchen_slug,
         # FIXME: Add that meal should be available also.
     }
-    if meal_datetime:
-        # Get the next 100 meals this kitchen has and show them.
-        meal_datetime = datetime.strptime(meal_datetime, '%Y-%m-%d/%H/%M')
-        meal_datetime = timezone.make_aware(
-            meal_datetime,
-            timezone.get_current_timezone(),
-        )
-        kwargs['scheduled_for'] = meal_datetime
+    add_date(kwargs, meal_datetime)
+    # Get the next 100 meals this kitchen has and show them.
     meals = Meal.objects.prefetch_related(
         'kitchen__reviews',
         'kitchen__chef',
         'kitchen__reviews__guest'
-    ).filter(**kwargs)
+    ).filter(**kwargs)[:100]
 
+    meal = None
     if not meals:
         kitchen = Kitchen.objects.get(slug=kitchen_slug)
         if not kitchen:
@@ -85,9 +85,11 @@ def kitchen_detail(request, kitchen_slug,
             raise Http404
     else:
         kitchen = meals[0].kitchen
-        if len(meals) == 1:
-            meal = meals[0]
-            meals = None
+
+    # Searched for a single meal, we show it.
+    if meal_datetime and len(meals) == 1:
+        meal = meals[0]
+        meals = None
 
     # We always have kitchen object here. We might have a "meal" or "meals"
     # depending on how many matching meals we have (and that in turn depending
@@ -102,6 +104,7 @@ def kitchen_detail(request, kitchen_slug,
         'image_number': range(1, 6),
         'number_of_guests': number_of_guests,
         'stripe_key': settings.STRIPE_KEY,
+        'meal_datetime': meal_datetime,
     })
     return render_to_response(
         'kitchen/kitchen_detail.html', context_instance=context)
