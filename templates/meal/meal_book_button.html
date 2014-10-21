@@ -50,7 +50,15 @@ $('#meal_confirmation_modal').on('shown.bs.modal', function() {
   $('#button_redirect_to_facebook_auth').click(function() {
     number_of_guests = $('#select_number_of_guests').val();
     return_url = '{{request.path}}';
-    return_url = return_url.replace(/\/guests\/(\d)./, /guests/) + number_of_guests + '/?confirm';
+    if (/\/guests\//.test(window.location)) {
+      // update number of guests, as combo shows
+      return_url = return_url.replace(/\/guests\/(\d)./, /guests/);
+    }
+    else {
+      // add number of guests, as combo shows
+      return_url += '/guests/';
+    }
+    return_url += number_of_guests + '/?confirm';
     url = '{% url 'social:begin' 'facebook' %}?next='+return_url;
     //url = '{% url 'social:begin' 'facebook' %}?next={{ request.path }}?confirm';
     //alert('will redirect to '+url);
