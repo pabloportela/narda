@@ -1,9 +1,7 @@
-from datetime import datetime, timedelta
 from django.shortcuts import render_to_response
 from django.http import Http404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 from django.conf import settings
 
 from frontend.models import Meal, KitchenReview, UserException, Kitchen
@@ -30,20 +28,19 @@ def search(request, date, number_of_guests):
     we gotta do POST and validate when database is bigger and we really have
     to search & sort.
     '''
-    arg_datetime = timezone.make_aware(
-        datetime.strptime(date, '%Y-%m-%d'),
-        timezone.get_current_timezone(),
-    )
-    one_day = timedelta(1)
+    kwargs = {
+        'status__exact': 'o',
+        'kitchen__available_seats__gte': int(number_of_guests),
+        'kitchen__enabled': True
+    }
+    add_date(kwargs, date)
+
     meal_list = Meal.objects.filter(
-        scheduled_for__lt=(arg_datetime + one_day),
-        scheduled_for__gt=arg_datetime,
-        status__exact='o',
-        kitchen__available_seats__gte=int(number_of_guests),
-        kitchen__enabled=True
+        **kwargs
     ).order_by(
         'scheduled_for'
     ).select_related('kitchen')
+
     context = RequestContext(request, {
         'request': request,
         'user': request.user,
