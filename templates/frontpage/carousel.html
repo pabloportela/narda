@@ -1,8 +1,8 @@
 {% load staticfiles %}
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-12 centered">
     <br/>
-    <div id="highlighted_meals_carousel" class="carousel slide" data-ride="carousel">
+    <div id="highlighted_meals_carousel" class="carousel slide " style="width: 480px;" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
         {% for m in highlighted_meals %}
@@ -14,8 +14,14 @@
       <div class="carousel-inner">
         {% for m in highlighted_meals %}
         <div class="item{% if forloop.counter0 = 0 %} active{% endif %}">
+          <a href="{% url "kitchen_detail" meal_datetime=m.meal_datetime kitchen_slug=m.kitchen.slug %}">
           <img src="/static/pictures/kitchens/{{m.kitchen.id}}/640x480/01.png" width="480" height="360" alt="{{m.kitchen}}"/>
-          <div class="carousel-caption">{{m.kitchen}}</div>
+          </a>
+          <div class="carousel-caption">
+          {{m.kitchen.name}}
+          <br/>
+         To be served on {{m.scheduled_for}}
+          </div>
         </div>
         {% endfor %}
       </div>
